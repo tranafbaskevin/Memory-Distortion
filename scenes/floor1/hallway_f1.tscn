@@ -1,8 +1,10 @@
-[gd_scene format=3 uid="uid://smmw1w4ea6th"]
+[gd_scene load_steps=9 format=3]
 
 [ext_resource type="PackedScene" path="res://player/Player.tscn" id="1_player"]
 [ext_resource type="PackedScene" path="res://environment/Door.tscn" id="2_door"]
 [ext_resource type="PackedScene" path="res://environment/StairTransition.tscn" id="3_stair"]
+[ext_resource type="Script" path="res://scenes/floor1/hallway_event_trigger.gd" id="4_evt"]
+[ext_resource type="Script" path="res://scenes/floor1/hallway_f1_loop.gd" id="5_loop"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_wall_h"]
 size = Vector2(1500, 20)
@@ -10,60 +12,87 @@ size = Vector2(1500, 20)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_wall_v"]
 size = Vector2(20, 300)
 
-[node name="HallwayF1" type="Node2D" unique_id=648136310]
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_horror_trigger"]
+size = Vector2(80, 260)
 
-[node name="Walls" type="StaticBody2D" parent="." unique_id=369751007]
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_loop_trigger"]
+size = Vector2(120, 260)
 
-[node name="TopWall" type="CollisionShape2D" parent="Walls" unique_id=902856563]
+[node name="HallwayF1" type="Node2D"]
+
+[node name="Walls" type="StaticBody2D" parent="."]
+
+[node name="TopWall" type="CollisionShape2D" parent="Walls"]
 position = Vector2(750, 10)
 shape = SubResource("RectangleShape2D_wall_h")
 
-[node name="BottomWall" type="CollisionShape2D" parent="Walls" unique_id=1710597819]
+[node name="BottomWall" type="CollisionShape2D" parent="Walls"]
 position = Vector2(750, 290)
 shape = SubResource("RectangleShape2D_wall_h")
 
-[node name="LeftWall" type="CollisionShape2D" parent="Walls" unique_id=59037421]
+[node name="LeftWall" type="CollisionShape2D" parent="Walls"]
 position = Vector2(10, 150)
 shape = SubResource("RectangleShape2D_wall_v")
 
-[node name="RightWall" type="CollisionShape2D" parent="Walls" unique_id=1370465452]
+[node name="RightWall" type="CollisionShape2D" parent="Walls"]
 position = Vector2(1490, 150)
 shape = SubResource("RectangleShape2D_wall_v")
 
-[node name="SpawnStart" type="Marker2D" parent="." unique_id=59314861]
+[node name="SpawnStart" type="Marker2D" parent="."]
 position = Vector2(150, 150)
 
-[node name="SpawnFromKitchen" type="Marker2D" parent="." unique_id=805079561]
+[node name="SpawnFromKitchen" type="Marker2D" parent="."]
 position = Vector2(300, 150)
 
-[node name="SpawnFromLivingRoom" type="Marker2D" parent="." unique_id=1271227439]
+[node name="SpawnFromLivingRoom" type="Marker2D" parent="."]
 position = Vector2(700, 150)
 
-[node name="SpawnFromToiletF1" type="Marker2D" parent="." unique_id=1928840869]
+[node name="SpawnFromToiletF1" type="Marker2D" parent="."]
 position = Vector2(1100, 150)
 
-[node name="SpawnFromStairsF2" type="Marker2D" parent="." unique_id=526320865]
+[node name="SpawnFromStairsF2" type="Marker2D" parent="."]
 position = Vector2(1320, 150)
 
-[node name="DoorToKitchen" parent="." unique_id=1401562586 instance=ExtResource("2_door")]
+[node name="DoorToKitchen" parent="." instance=ExtResource("2_door")]
 position = Vector2(300, 60)
 target_scene = "res://scenes/floor1/kitchen.tscn"
 target_spawn_name = "SpawnPoint"
 
-[node name="DoorToLivingRoom" parent="." unique_id=608394873 instance=ExtResource("2_door")]
+[node name="DoorToLivingRoom" parent="." instance=ExtResource("2_door")]
 position = Vector2(700, 60)
 target_scene = "res://scenes/floor1/living_room.tscn"
 target_spawn_name = "SpawnPoint"
 
-[node name="DoorToToilet" parent="." unique_id=841600097 instance=ExtResource("2_door")]
+[node name="DoorToToilet" parent="." instance=ExtResource("2_door")]
 position = Vector2(1100, 60)
 target_scene = "res://scenes/floor1/toilet_f1.tscn"
 target_spawn_name = "SpawnPoint"
 
-[node name="StairsToF2" parent="." unique_id=1411854118 instance=ExtResource("3_stair")]
+[node name="StairsToF2" parent="." instance=ExtResource("3_stair")]
 position = Vector2(1420, 150)
 target_scene = "res://scenes/floor2/hallway_f2.tscn"
 target_spawn_name = "SpawnFromStairsF1"
 
-[node name="Player" parent="." unique_id=1785133338 instance=ExtResource("1_player")]
+[node name="HorrorTrigger" type="Area2D" parent="."]
+position = Vector2(850, 150)
+script = ExtResource("4_evt")
+dialogue_text = "Tại sao hành lang lại dài hơn tớ nhớ nhỉ..."
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HorrorTrigger"]
+shape = SubResource("RectangleShape2D_horror_trigger")
+debug_color = Color(0.901961, 0.6, 0.0980392, 0.419608)
+
+[node name="LoopTrigger" type="Area2D" parent="."]
+position = Vector2(1200, 150)
+script = ExtResource("5_loop")
+event_id = "hallway_f1_loop"
+delay = 0.0
+trigger_chance = 0.6
+repeatable = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="LoopTrigger"]
+shape = SubResource("RectangleShape2D_loop_trigger")
+debug_color = Color(0.2, 0.1, 0.9, 0.3)
+
+[node name="Player" parent="." instance=ExtResource("1_player")]
 position = Vector2(150, 150)

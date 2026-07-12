@@ -1,9 +1,47 @@
-[gd_scene load_steps=2 format=3]
+[gd_scene load_steps=8 format=3]
 
 [ext_resource type="PackedScene" path="res://scenes/RoomTemplate.tscn" id="1_template"]
+[ext_resource type="Script" path="res://scenes/floor1/kitchen.gd" id="2_gd"]
+[ext_resource type="Script" path="res://components/interactable.gd" id="3_interactable"]
+[ext_resource type="Texture2D" path="res://icon.svg" id="4_icon"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_chair"]
+size = Vector2(56, 56)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_note"]
+size = Vector2(80, 40)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_note_interact"]
+radius = 55.0
 
 [node name="Kitchen" instance=ExtResource("1_template")]
+script = ExtResource("2_gd")
 
 [node name="DoorToHallway" parent="."]
 target_scene = "res://scenes/floor1/hallway_f1.tscn"
 target_spawn_name = "SpawnFromKitchen"
+
+[node name="Chair" type="StaticBody2D" parent="." index="4"]
+position = Vector2(650, 380)
+
+[node name="Sprite2D" type="Sprite2D" parent="Chair"]
+scale = Vector2(0.875, 0.875)
+texture = ExtResource("4_icon")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Chair"]
+shape = SubResource("RectangleShape2D_chair")
+
+[node name="KitchenLight" type="PointLight2D" parent="." index="5"]
+position = Vector2(576, 200)
+energy = 1.0
+texture_scale = 5.0
+color = Color(1, 0.980392, 0.870588, 1)
+
+[node name="NoteOnTable" type="Area2D" parent="." index="6"]
+position = Vector2(400, 300)
+script = ExtResource("3_interactable")
+prompt_message = "Nhấn E để đọc mảnh giấy"
+dialogue_text = "Nét chữ nguệch ngoạc: 'Đừng bao giờ vào bếp khi trời tối.'"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="NoteOnTable"]
+shape = SubResource("CircleShape2D_note_interact")

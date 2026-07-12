@@ -1,14 +1,18 @@
-[gd_scene load_steps=6 format=3]
+[gd_scene load_steps=8 format=3]
 
 [ext_resource type="PackedScene" path="res://player/Player.tscn" id="1_player"]
 [ext_resource type="PackedScene" path="res://environment/Door.tscn" id="2_door"]
 [ext_resource type="PackedScene" path="res://environment/StairTransition.tscn" id="3_stair"]
+[ext_resource type="Script" path="res://scenes/floor2/hallway_f2_trigger.gd" id="4_trigger"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_wall_h"]
 size = Vector2(2000, 20)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_wall_v"]
 size = Vector2(20, 300)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_trigger"]
+size = Vector2(120, 280)
 
 [node name="HallwayF2" type="Node2D"]
 
@@ -77,6 +81,17 @@ target_spawn_name = "SpawnPoint"
 position = Vector2(1500, 60)
 target_scene = "res://scenes/floor2/toilet_f2.tscn"
 target_spawn_name = "SpawnPoint"
+
+[node name="WhisperTrigger" type="Area2D" parent="."]
+position = Vector2(1050, 150)
+script = ExtResource("4_trigger")
+event_id = "hallway_f2_whisper"
+delay = 0.0
+trigger_chance = 0.8
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="WhisperTrigger"]
+shape = SubResource("RectangleShape2D_trigger")
+debug_color = Color(0.4, 0.1, 0.8, 0.35)
 
 [node name="Player" parent="." instance=ExtResource("1_player")]
 position = Vector2(180, 150)

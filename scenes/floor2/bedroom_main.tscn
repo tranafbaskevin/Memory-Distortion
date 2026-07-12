@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3]
+[gd_scene load_steps=8 format=3]
 
 [ext_resource type="PackedScene" path="res://scenes/RoomTemplate.tscn" id="1_template"]
 [ext_resource type="Script" path="res://scenes/floor2/bedroom_main.gd" id="2_gd"]
@@ -10,6 +10,9 @@ size = Vector2(80, 50)
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_diary"]
 radius = 50.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_note"]
+radius = 45.0
 
 [node name="BedroomMain" instance=ExtResource("1_template")]
 script = ExtResource("2_gd")
@@ -36,7 +39,16 @@ prompt_message = "Nhấn E để đọc nhật ký"
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Diary"]
 shape = SubResource("CircleShape2D_diary")
 
-[node name="RedShadow" type="ColorRect" parent="." index="6"]
+[node name="CrumpledNote" type="Area2D" parent="." index="6"]
+position = Vector2(750, 480)
+script = ExtResource("3_interactable")
+prompt_message = "Nhấn E để nhặt mảnh giấy"
+dialogue_text = "Chữ nguệch ngoạc trên mảnh giấy nhàu: '...đừng nhìn vào góc phòng...'"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CrumpledNote"]
+shape = SubResource("CircleShape2D_note")
+
+[node name="RedShadow" type="ColorRect" parent="." index="7"]
 offset_left = 950.0
 offset_top = 100.0
 offset_right = 1050.0
