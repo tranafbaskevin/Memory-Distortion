@@ -5,7 +5,14 @@
 extends AdvancedEventTrigger
 
 func _on_trigger(player: Node2D) -> void:
+	# Chỉ kích hoạt nếu DistortionController chấp nhận sự kiện whisper (Tier 4)
+	var event = DistortionController.request_event(4, 4)
+	if event != "whisper":
+		# Nếu chưa đến Tier 4 hoặc đang cooldown, từ chối để tránh spam
+		return
+		
 	var camera = player.find_child("Camera2D", true, false)
+
 	
 	# Vignette nhẹ khi sự kiện bắt đầu
 	Vignette.show_vignette(0.25, 2.0)

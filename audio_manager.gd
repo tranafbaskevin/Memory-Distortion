@@ -103,3 +103,16 @@ func play_door_locked() -> void:
 func play_key_pickup() -> void:
 	play_sfx_placeholder("key_pickup")
 
+# ─── PROGRESSION-BASED AMBIENT TEXTURE ────────────────────────────────────────
+func set_ambient_tier(tier: int) -> void:
+	match tier:
+		0, 1:
+			play_ambient_placeholder("ambient_house")
+		2:
+			play_ambient_placeholder("ambient_tension_rising")
+		3:
+			play_ambient_placeholder("ambient_distorted_spatial")
+		4:
+			play_ambient_placeholder("ambient_psychological_dread")
+
+

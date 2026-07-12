@@ -1,0 +1,28 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://environment/env_locked_door.gd" id="1_gd"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_door"]
+size = Vector2(64, 64)
+
+[node name="EnvLockedDoor" type="Area2D"]
+script = ExtResource("1_gd")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_door")
+debug_color = Color(0.701961, 0.4, 0.1, 0.419608)
+
+[node name="LightHint" type="PointLight2D" parent="."]
+position = Vector2(0, 30)
+color = Color(1, 0.901961, 0.6, 1)
+energy = 0.0
+texture_scale = 1.0
+
+[node name="PromptLabel" type="Label" parent="."]
+offset_left = -100.0
+offset_top = -60.0
+offset_right = 100.0
+offset_bottom = -37.0
+text = "..."
+horizontal_alignment = 1
+vertical_alignment = 1

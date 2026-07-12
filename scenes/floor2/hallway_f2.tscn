@@ -1,9 +1,11 @@
-[gd_scene load_steps=8 format=3]
+[gd_scene load_steps=9 format=3]
 
 [ext_resource type="PackedScene" path="res://player/Player.tscn" id="1_player"]
 [ext_resource type="PackedScene" path="res://environment/Door.tscn" id="2_door"]
 [ext_resource type="PackedScene" path="res://environment/StairTransition.tscn" id="3_stair"]
 [ext_resource type="Script" path="res://scenes/floor2/hallway_f2_trigger.gd" id="4_trigger"]
+[ext_resource type="PackedScene" path="res://environment/EnvLockedDoor.tscn" id="5_locked_door"]
+
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_wall_h"]
 size = Vector2(2000, 20)
@@ -57,30 +59,43 @@ position = Vector2(80, 150)
 target_scene = "res://scenes/floor1/hallway_f1.tscn"
 target_spawn_name = "SpawnFromStairsF2"
 
-[node name="DoorToSiblingRoom" parent="." instance=ExtResource("2_door")]
+[node name="DoorToSiblingRoom" parent="." instance=ExtResource("5_locked_door")]
 position = Vector2(300, 60)
+room_id = "bedroom_sibling"
 target_scene = "res://scenes/floor2/bedroom_sibling.tscn"
 target_spawn_name = "SpawnPoint"
+locked_hint = "Cửa phòng của em gái. Có tiếng hộp nhạc phát ra rất nhỏ từ bên trong..."
+foreshadow_type = "music_box"
 
-[node name="DoorToParentsRoom" parent="." instance=ExtResource("2_door")]
+[node name="DoorToParentsRoom" parent="." instance=ExtResource("5_locked_door")]
 position = Vector2(600, 60)
+room_id = "bedroom_parents"
 target_scene = "res://scenes/floor2/bedroom_parents.tscn"
 target_spawn_name = "SpawnPoint"
+locked_hint = "Cửa phòng bố mẹ. Căn phòng hoàn toàn im lặng một cách đáng sợ."
+foreshadow_type = "silence"
 
-[node name="DoorToMainRoom" parent="." instance=ExtResource("2_door")]
+[node name="DoorToMainRoom" parent="." instance=ExtResource("5_locked_door")]
 position = Vector2(900, 60)
+room_id = "bedroom_main"
 target_scene = "res://scenes/floor2/bedroom_main.tscn"
 target_spawn_name = "SpawnPoint"
+locked_hint = "Cửa phòng tớ. Tớ nghe thấy tiếng thì thầm nhè nhẹ từ bên trong..."
+foreshadow_type = "whisper"
 
 [node name="DoorToStudy" parent="." instance=ExtResource("2_door")]
 position = Vector2(1200, 60)
 target_scene = "res://scenes/floor2/study_room.tscn"
 target_spawn_name = "SpawnPoint"
 
-[node name="DoorToToilet" parent="." instance=ExtResource("2_door")]
+[node name="DoorToToilet" parent="." instance=ExtResource("5_locked_door")]
 position = Vector2(1500, 60)
+room_id = "toilet_f2"
 target_scene = "res://scenes/floor2/toilet_f2.tscn"
 target_spawn_name = "SpawnPoint"
+locked_hint = "Cửa nhà vệ sinh tầng 2. Có tiếng nước chảy nhỏ giọt ở bên trong."
+foreshadow_type = "dripping"
+
 
 [node name="WhisperTrigger" type="Area2D" parent="."]
 position = Vector2(1050, 150)

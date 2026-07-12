@@ -26,4 +26,9 @@ func _interact(_player: Node2D) -> void:
 	is_active = false
 	hide()
 	
+	# Thông báo cho hệ thống
+	DistortionController.notify_major_interaction("key_pickup")
+	RoomGateManager.unlock_room("bedroom_main")
+	
 	print("[KeyItem] Key picked up!")
+

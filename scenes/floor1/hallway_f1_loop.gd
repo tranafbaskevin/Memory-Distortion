@@ -5,7 +5,14 @@
 extends AdvancedEventTrigger
 
 func _on_trigger(player: Node2D) -> void:
+	# Chỉ kích hoạt nếu DistortionController chấp nhận sự kiện hallway_loop (Tier 3)
+	var event = DistortionController.request_event(3, 3)
+	if event != "hallway_loop":
+		# Từ chối nếu chưa tới Tier 3 hoặc đang cooldown
+		return
+		
 	var camera = player.find_child("Camera2D", true, false)
+
 	if not camera:
 		return
 	

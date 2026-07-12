@@ -2,7 +2,7 @@
 
 [ext_resource type="PackedScene" path="res://scenes/RoomTemplate.tscn" id="1_template"]
 [ext_resource type="Script" path="res://scenes/floor1/kitchen.gd" id="2_gd"]
-[ext_resource type="Script" path="res://components/interactable.gd" id="3_interactable"]
+[ext_resource type="Script" path="res://components/anchor_object.gd" id="3_anchor"]
 [ext_resource type="Texture2D" path="res://icon.svg" id="4_icon"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_chair"]
@@ -37,11 +37,18 @@ energy = 1.0
 texture_scale = 5.0
 color = Color(1, 0.980392, 0.870588, 1)
 
-[node name="NoteOnTable" type="Area2D" parent="." index="6"]
+[node name="ClockAnchor" type="Area2D" parent="." index="6"]
 position = Vector2(400, 300)
-script = ExtResource("3_interactable")
-prompt_message = "Nhấn E để đọc mảnh giấy"
-dialogue_text = "Nét chữ nguệch ngoạc: 'Đừng bao giờ vào bếp khi trời tối.'"
+script = ExtResource("3_anchor")
+anchor_id = "kitchen_clock"
+base_description = "Chiếc đồng hồ treo tường cũ kỹ. Nó đã ngừng chạy từ lâu."
+changed_description = "Khoan đã... chiếc đồng hồ này đang chạy ngược? Và kim giờ chỉ vào một con số không có thật..."
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="NoteOnTable"]
+[node name="Sprite2D" type="Sprite2D" parent="ClockAnchor"]
+scale = Vector2(0.4, 0.4)
+texture = ExtResource("4_icon")
+modulate = Color(0.6, 0.6, 0.6, 1)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ClockAnchor"]
 shape = SubResource("CircleShape2D_note_interact")
+

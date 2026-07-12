@@ -33,8 +33,10 @@ func _apply_normal_state() -> void:
 		diary.interacted.connect(_on_diary_interacted)
 
 func _apply_distorted_state() -> void:
+	var tier = DistortionController.current_tier
 	# 1. Cái bàn bị dịch chuyển tinh tế (lệch hướng khác mỗi lần)
 	if desk:
+
 		var offset_x = [-90, 120, -50][Global.room_visits[SCENE_ID] % 3]
 		var offset_y = [40, -70, 30][Global.room_visits[SCENE_ID] % 3]
 		desk.position += Vector2(offset_x, offset_y)
@@ -64,14 +66,17 @@ func _apply_distorted_state() -> void:
 			door.target_scene = "res://scenes/floor2/bedroom_sibling.tscn"
 			door.prompt_message = "Nhấn E để mở cửa"
 	
-	# 6. Camera ngột ngạt hơn theo số lần vào
+	# 6. Camera ngột ngạt hơn theo level tier
 	# 7. Vignette tối cạnh — áp lực tâm lý
-	Vignette.show_vignette(0.3 + Global.room_visits[SCENE_ID] * 0.1, 2.0)
+	Vignette.show_vignette(0.2 + tier * 0.1, 2.0)
+	
+	# Request event Tier 3 từ DistortionController (spatial distortion)
+	DistortionController.request_event(3, 3)
 	
 	await get_tree().create_timer(0.3).timeout
 	var camera = player.find_child("Camera2D", true, false)
 	if camera:
-		var zoom_intensity = min(1.0 + Global.room_visits[SCENE_ID] * 0.15, 1.6)
+		var zoom_intensity = min(1.0 + tier * 0.15, 1.6)
 		camera.smooth_zoom(Vector2(zoom_intensity, zoom_intensity), 2.0)
 	
 	# 7. Lời thoại thay đổi theo số lần vào
@@ -83,8 +88,13 @@ func _apply_distorted_state() -> void:
 	var msg_idx = min(Global.room_visits[SCENE_ID] - 2, messages.size() - 1)
 	Narrative.show_message(messages[msg_idx], 4.5)
 
+
 func _on_diary_interacted(_player: Node2D) -> void:
 	if not Global.bedroom_distorted:
 		Global.bedroom_distorted = true
 		Narrative.show_message("Nhật ký: 'Hôm nay tớ cảm giác như ai đó đã sắp xếp lại các căn phòng... Tốt nhất không nên ra ngoài...'", 5.5)
 		AudioManager.play_sfx_placeholder("page_turn_eerie")
+		
+		# Thông báo cho DistortionController để tăng tier / unlock phòng
+		DistortionController.notify_major_interaction("diary_read")
+

@@ -1,8 +1,13 @@
 extends EventTrigger
 
 func _on_trigger(player: Node2D) -> void:
-	# Bẫy sự kiện kinh dị: Giật camera rất nhanh để tạo cảm giác giật mình (jump scare)
+	# Chỉ kích hoạt nếu DistortionController chấp nhận sự kiện Tier 2
+	var event = DistortionController.request_event(2, 2)
+	if event == "":
+		return
+		
 	var camera = player.find_child("Camera2D", true, false)
+
 	if camera:
 		print("[HORROR EVENT] Twitching camera zoom!")
 		

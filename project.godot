@@ -22,6 +22,8 @@ Narrative="*res://narrative.gd"
 AudioManager="*res://audio_manager.gd"
 Vignette="*res://vignette.gd"
 SaveSystem="*res://save_system.gd"
+DistortionController="*res://distortion_controller.gd"
+RoomGateManager="*res://room_gate_manager.gd"
 
 [display]
 
