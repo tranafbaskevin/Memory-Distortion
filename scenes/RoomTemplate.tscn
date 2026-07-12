@@ -1,0 +1,39 @@
+[gd_scene load_steps=5 format=3]
+
+[ext_resource type="PackedScene" path="res://player/Player.tscn" id="1_player"]
+[ext_resource type="PackedScene" path="res://environment/Door.tscn" id="2_door"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_wall_h"]
+size = Vector2(1152, 20)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_wall_v"]
+size = Vector2(20, 648)
+
+[node name="RoomTemplate" type="Node2D"]
+
+[node name="Walls" type="StaticBody2D" parent="."]
+
+[node name="TopWall" type="CollisionShape2D" parent="Walls"]
+position = Vector2(576, 10)
+shape = SubResource("RectangleShape2D_wall_h")
+
+[node name="BottomWall" type="CollisionShape2D" parent="Walls"]
+position = Vector2(576, 638)
+shape = SubResource("RectangleShape2D_wall_h")
+
+[node name="LeftWall" type="CollisionShape2D" parent="Walls"]
+position = Vector2(10, 324)
+shape = SubResource("RectangleShape2D_wall_v")
+
+[node name="RightWall" type="CollisionShape2D" parent="Walls"]
+position = Vector2(1142, 324)
+shape = SubResource("RectangleShape2D_wall_v")
+
+[node name="SpawnPoint" type="Marker2D" parent="."]
+position = Vector2(576, 324)
+
+[node name="DoorToHallway" parent="." instance=ExtResource("2_door")]
+position = Vector2(576, 590)
+
+[node name="Player" parent="." instance=ExtResource("1_player")]
+position = Vector2(576, 324)

@@ -1,0 +1,82 @@
+[gd_scene load_steps=6 format=3]
+
+[ext_resource type="PackedScene" path="res://player/Player.tscn" id="1_player"]
+[ext_resource type="PackedScene" path="res://environment/Door.tscn" id="2_door"]
+[ext_resource type="PackedScene" path="res://environment/StairTransition.tscn" id="3_stair"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_wall_h"]
+size = Vector2(2000, 20)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_wall_v"]
+size = Vector2(20, 300)
+
+[node name="HallwayF2" type="Node2D"]
+
+[node name="Walls" type="StaticBody2D" parent="."]
+
+[node name="TopWall" type="CollisionShape2D" parent="Walls"]
+position = Vector2(1000, 10)
+shape = SubResource("RectangleShape2D_wall_h")
+
+[node name="BottomWall" type="CollisionShape2D" parent="Walls"]
+position = Vector2(1000, 290)
+shape = SubResource("RectangleShape2D_wall_h")
+
+[node name="LeftWall" type="CollisionShape2D" parent="Walls"]
+position = Vector2(10, 150)
+shape = SubResource("RectangleShape2D_wall_v")
+
+[node name="RightWall" type="CollisionShape2D" parent="Walls"]
+position = Vector2(1990, 150)
+shape = SubResource("RectangleShape2D_wall_v")
+
+[node name="SpawnFromStairsF1" type="Marker2D" parent="."]
+position = Vector2(180, 150)
+
+[node name="SpawnFromBedroomSibling" type="Marker2D" parent="."]
+position = Vector2(300, 150)
+
+[node name="SpawnFromBedroomParents" type="Marker2D" parent="."]
+position = Vector2(600, 150)
+
+[node name="SpawnFromBedroomMain" type="Marker2D" parent="."]
+position = Vector2(900, 150)
+
+[node name="SpawnFromStudy" type="Marker2D" parent="."]
+position = Vector2(1200, 150)
+
+[node name="SpawnFromToiletF2" type="Marker2D" parent="."]
+position = Vector2(1500, 150)
+
+[node name="StairsToF1" parent="." instance=ExtResource("3_stair")]
+position = Vector2(80, 150)
+target_scene = "res://scenes/floor1/hallway_f1.tscn"
+target_spawn_name = "SpawnFromStairsF2"
+
+[node name="DoorToSiblingRoom" parent="." instance=ExtResource("2_door")]
+position = Vector2(300, 60)
+target_scene = "res://scenes/floor2/bedroom_sibling.tscn"
+target_spawn_name = "SpawnPoint"
+
+[node name="DoorToParentsRoom" parent="." instance=ExtResource("2_door")]
+position = Vector2(600, 60)
+target_scene = "res://scenes/floor2/bedroom_parents.tscn"
+target_spawn_name = "SpawnPoint"
+
+[node name="DoorToMainRoom" parent="." instance=ExtResource("2_door")]
+position = Vector2(900, 60)
+target_scene = "res://scenes/floor2/bedroom_main.tscn"
+target_spawn_name = "SpawnPoint"
+
+[node name="DoorToStudy" parent="." instance=ExtResource("2_door")]
+position = Vector2(1200, 60)
+target_scene = "res://scenes/floor2/study_room.tscn"
+target_spawn_name = "SpawnPoint"
+
+[node name="DoorToToilet" parent="." instance=ExtResource("2_door")]
+position = Vector2(1500, 60)
+target_scene = "res://scenes/floor2/toilet_f2.tscn"
+target_spawn_name = "SpawnPoint"
+
+[node name="Player" parent="." instance=ExtResource("1_player")]
+position = Vector2(180, 150)
