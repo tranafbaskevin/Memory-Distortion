@@ -17,9 +17,13 @@ func _interact(_player: Node2D) -> void:
 	if target_scene != "":
 		# Thiết lập điểm spawn tiếp theo trong Global autoload
 		Global.player_spawn_name = target_spawn_name
-		print("Door opened! Transitioning to: ", target_scene, " (Spawn Marker: ", target_spawn_name, ")")
 		
-		# Chuyển Scene
+		# Auto-save trước khi chuyển scene
+		SaveSystem.save_game()
+		AudioManager.play_door_open()
+		
+		print("Door opened! Transitioning to: ", target_scene, " (Spawn Marker: ", target_spawn_name, ")")
 		get_tree().change_scene_to_file(target_scene)
 	else:
 		print("Warning: target_scene is empty on door: ", name)
+

@@ -1,9 +1,40 @@
-[gd_scene load_steps=2 format=3]
+[gd_scene load_steps=7 format=3]
 
 [ext_resource type="PackedScene" path="res://scenes/RoomTemplate.tscn" id="1_template"]
+[ext_resource type="Script" path="res://scenes/floor2/study_room.gd" id="2_gd"]
+[ext_resource type="Script" path="res://components/key_item.gd" id="3_key"]
+[ext_resource type="Texture2D" path="res://icon.svg" id="4_icon"]
+[ext_resource type="Script" path="res://components/light_flicker.gd" id="5_flicker"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_key"]
+radius = 40.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_light"]
+radius = 50.0
 
 [node name="StudyRoom" instance=ExtResource("1_template")]
+script = ExtResource("2_gd")
 
 [node name="DoorToHallway" parent="."]
 target_scene = "res://scenes/floor2/hallway_f2.tscn"
 target_spawn_name = "SpawnFromStudy"
+
+[node name="Key" type="Area2D" parent="." index="4"]
+position = Vector2(800, 200)
+script = ExtResource("3_key")
+
+[node name="Sprite2D" type="Sprite2D" parent="Key"]
+scale = Vector2(0.4, 0.4)
+texture = ExtResource("4_icon")
+modulate = Color(1, 0.843137, 0, 1)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Key"]
+shape = SubResource("CircleShape2D_key")
+
+[node name="StudyLight" type="PointLight2D" parent="." index="5"]
+position = Vector2(576, 180)
+script = ExtResource("5_flicker")
+base_energy = 0.7
+flicker_intensity = 0.15
+texture_scale = 4.0
+color = Color(0.9, 0.85, 0.7, 1)

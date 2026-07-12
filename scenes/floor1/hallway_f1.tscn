@@ -1,10 +1,11 @@
-[gd_scene load_steps=9 format=3]
+[gd_scene load_steps=8 format=3]
 
 [ext_resource type="PackedScene" path="res://player/Player.tscn" id="1_player"]
 [ext_resource type="PackedScene" path="res://environment/Door.tscn" id="2_door"]
 [ext_resource type="PackedScene" path="res://environment/StairTransition.tscn" id="3_stair"]
 [ext_resource type="Script" path="res://scenes/floor1/hallway_event_trigger.gd" id="4_evt"]
 [ext_resource type="Script" path="res://scenes/floor1/hallway_f1_loop.gd" id="5_loop"]
+[ext_resource type="Script" path="res://environment/locked_door.gd" id="6_locked"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_wall_h"]
 size = Vector2(1500, 20)
@@ -72,6 +73,17 @@ target_spawn_name = "SpawnPoint"
 position = Vector2(1420, 150)
 target_scene = "res://scenes/floor2/hallway_f2.tscn"
 target_spawn_name = "SpawnFromStairsF1"
+
+[node name="ExitDoor" type="Area2D" parent="."]
+position = Vector2(80, 150)
+script = ExtResource("6_locked")
+target_scene = "res://scenes/ending_stub.tscn"
+target_spawn_name = ""
+prompt_message = "Cửa bị khoá..."
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ExitDoor"]
+shape = SubResource("RectangleShape2D_wall_v")
+debug_color = Color(0.2, 0.8, 0.2, 0.4)
 
 [node name="HorrorTrigger" type="Area2D" parent="."]
 position = Vector2(850, 150)

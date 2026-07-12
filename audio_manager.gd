@@ -7,6 +7,21 @@ var _sfx_player: AudioStreamPlayer
 # ─── Tween hiện tại đang fade ──────────────────────────────────────────────────
 var _fade_tween: Tween = null
 
+# Map scene path → ambient label (dùng khi chưa có file thật)
+const SCENE_AMBIENT_MAP: Dictionary = {
+	"res://scenes/floor1/hallway_f1.tscn":  "ambient_house",
+	"res://scenes/floor1/kitchen.tscn":     "ambient_house",
+	"res://scenes/floor1/living_room.tscn": "ambient_house",
+	"res://scenes/floor1/toilet_f1.tscn":   "ambient_house",
+	"res://scenes/floor2/hallway_f2.tscn":  "ambient_house",
+	"res://scenes/floor2/bedroom_main.tscn":"ambient_bedroom",
+	"res://scenes/floor2/bedroom_parents.tscn": "ambient_house",
+	"res://scenes/floor2/bedroom_sibling.tscn": "ambient_house",
+	"res://scenes/floor2/study_room.tscn":  "ambient_house",
+	"res://scenes/floor2/toilet_f2.tscn":   "ambient_house",
+}
+
+
 func _ready() -> void:
 	# Tạo AudioStreamPlayer cho ambient (âm nhạc nền, loop)
 	_ambient_player = AudioStreamPlayer.new()
@@ -65,3 +80,26 @@ func play_ambient_placeholder(label: String = "ambient") -> void:
 
 func play_sfx_placeholder(label: String = "sfx") -> void:
 	print("[AudioManager] [PLACEHOLDER] SFX would play: ", label)
+
+# ─── SCENE-AWARE HELPER ───────────────────────────────────────────────────────
+# Tự động phát ambient phù hợp dựa theo scene path hiện tại
+# Gọi ở đầu _ready() của mỗi scene thay vì hardcode label
+func play_ambient_for_scene(scene_path: String, distorted: bool = false) -> void:
+	if distorted:
+		play_ambient_placeholder("ambient_distorted")
+		return
+	if SCENE_AMBIENT_MAP.has(scene_path):
+		play_ambient_placeholder(SCENE_AMBIENT_MAP[scene_path])
+	else:
+		play_ambient_placeholder("ambient_house")
+
+# ─── DOOR / TRANSITION SFX ────────────────────────────────────────────────────
+func play_door_open() -> void:
+	play_sfx_placeholder("door_open")
+
+func play_door_locked() -> void:
+	play_sfx_placeholder("door_locked")
+
+func play_key_pickup() -> void:
+	play_sfx_placeholder("key_pickup")
+

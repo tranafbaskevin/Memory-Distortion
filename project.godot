@@ -21,6 +21,7 @@ Global="*res://global.gd"
 Narrative="*res://narrative.gd"
 AudioManager="*res://audio_manager.gd"
 Vignette="*res://vignette.gd"
+SaveSystem="*res://save_system.gd"
 
 [display]
 
