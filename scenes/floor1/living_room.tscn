@@ -1,9 +1,36 @@
-[gd_scene load_steps=2 format=3]
+[gd_scene load_steps=6 format=3]
 
 [ext_resource type="PackedScene" path="res://scenes/RoomTemplate.tscn" id="1_template"]
+[ext_resource type="Script" path="res://components/interactable.gd" id="2_interactable"]
+[ext_resource type="Texture2D" path="res://icon.svg" id="3_icon"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_tv"]
+size = Vector2(96, 64)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_tv_detector"]
+radius = 60.0
 
 [node name="LivingRoom" instance=ExtResource("1_template")]
 
 [node name="DoorToHallway" parent="."]
 target_scene = "res://scenes/floor1/hallway_f1.tscn"
 target_spawn_name = "SpawnFromLivingRoom"
+
+[node name="TV" type="StaticBody2D" parent="." index="4"]
+position = Vector2(576, 200)
+
+[node name="Sprite2D" type="Sprite2D" parent="TV"]
+scale = Vector2(1.5, 1.0)
+texture = ExtResource("3_icon")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="TV"]
+shape = SubResource("RectangleShape2D_tv")
+
+[node name="TVInteractable" type="Area2D" parent="." index="5"]
+position = Vector2(576, 200)
+script = ExtResource("2_interactable")
+prompt_message = "Nhấn E để bật Tivi"
+dialogue_text = "Tivi chỉ toàn những hạt nhiễu trắng đen và tiếng rè rè ghê rợn..."
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="TVInteractable"]
+shape = SubResource("CircleShape2D_tv_detector")

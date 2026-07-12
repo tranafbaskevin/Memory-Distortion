@@ -1,9 +1,44 @@
-[gd_scene load_steps=2 format=3]
+[gd_scene load_steps=7 format=3]
 
 [ext_resource type="PackedScene" path="res://scenes/RoomTemplate.tscn" id="1_template"]
+[ext_resource type="Script" path="res://scenes/floor2/bedroom_main.gd" id="2_gd"]
+[ext_resource type="Script" path="res://components/interactable.gd" id="3_interactable"]
+[ext_resource type="Texture2D" path="res://icon.svg" id="4_icon"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_desk"]
+size = Vector2(80, 50)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_diary"]
+radius = 50.0
 
 [node name="BedroomMain" instance=ExtResource("1_template")]
+script = ExtResource("2_gd")
 
 [node name="DoorToHallway" parent="."]
 target_scene = "res://scenes/floor2/hallway_f2.tscn"
 target_spawn_name = "SpawnFromBedroomMain"
+
+[node name="Desk" type="StaticBody2D" parent="." index="4"]
+position = Vector2(400, 250)
+
+[node name="Sprite2D" type="Sprite2D" parent="Desk"]
+scale = Vector2(1.25, 0.78125)
+texture = ExtResource("4_icon")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Desk"]
+shape = SubResource("RectangleShape2D_desk")
+
+[node name="Diary" type="Area2D" parent="." index="5"]
+position = Vector2(400, 250)
+script = ExtResource("3_interactable")
+prompt_message = "Nhấn E để đọc nhật ký"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Diary"]
+shape = SubResource("CircleShape2D_diary")
+
+[node name="RedShadow" type="ColorRect" parent="." index="6"]
+offset_left = 950.0
+offset_top = 100.0
+offset_right = 1050.0
+offset_bottom = 200.0
+color = Color(1, 0, 0, 0.352941)

@@ -7,6 +7,7 @@ size = Vector2(80, 80)
 
 [node name="StairTransition" type="Area2D"]
 script = ExtResource("1_gd")
+prompt_message = "Nhấn E để leo cầu thang"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("RectangleShape2D_stair")
