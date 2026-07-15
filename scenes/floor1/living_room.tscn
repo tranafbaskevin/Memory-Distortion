@@ -1,14 +1,19 @@
-[gd_scene load_steps=6 format=3]
+[gd_scene load_steps=10 format=3]
 
 [ext_resource type="PackedScene" path="res://scenes/RoomTemplate.tscn" id="1_template"]
 [ext_resource type="Script" path="res://components/interactable.gd" id="2_interactable"]
 [ext_resource type="Texture2D" path="res://icon.svg" id="3_icon"]
+[ext_resource type="Script" path="res://scenes/floor1/family_photo.gd" id="4_photo"]
+[ext_resource type="Script" path="res://components/light_flicker.gd" id="5_flicker"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_tv"]
 size = Vector2(96, 64)
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_tv_detector"]
 radius = 60.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_photo_detector"]
+radius = 50.0
 
 [node name="LivingRoom" instance=ExtResource("1_template")]
 
@@ -34,3 +39,22 @@ dialogue_text = "Tivi chỉ toàn những hạt nhiễu trắng đen và tiếng
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="TVInteractable"]
 shape = SubResource("CircleShape2D_tv_detector")
+
+[node name="LivingRoomLight" type="PointLight2D" parent="." index="6"]
+position = Vector2(576, 200)
+script = ExtResource("5_flicker")
+base_energy = 0.8
+flicker_intensity = 0.15
+color = Color(1, 0.94902, 0.8, 1)
+
+[node name="FamilyPhoto" type="Area2D" parent="." index="7"]
+position = Vector2(300, 300)
+script = ExtResource("4_photo")
+
+[node name="Sprite2D" type="Sprite2D" parent="FamilyPhoto"]
+scale = Vector2(0.4, 0.4)
+texture = ExtResource("3_icon")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="FamilyPhoto"]
+shape = SubResource("CircleShape2D_photo_detector")
+

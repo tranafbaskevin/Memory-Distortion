@@ -1,9 +1,36 @@
-[gd_scene load_steps=2 format=3]
+[gd_scene load_steps=6 format=3]
 
 [ext_resource type="PackedScene" path="res://scenes/RoomTemplate.tscn" id="1_template"]
+[ext_resource type="PackedScene" path="res://components/MemoryTrigger.tscn" id="2_trigger"]
+[ext_resource type="Script" path="res://components/mirror_puzzle.gd" id="3_mirror"]
+[ext_resource type="Texture2D" path="res://icon.svg" id="4_icon"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_mirror"]
+radius = 60.0
 
 [node name="ToiletF1" instance=ExtResource("1_template")]
 
 [node name="DoorToHallway" parent="."]
 target_scene = "res://scenes/floor1/hallway_f1.tscn"
 target_spawn_name = "SpawnFromToiletF1"
+
+[node name="ChildhoodTrigger" parent="." instance=ExtResource("2_trigger")]
+position = Vector2(800, 300)
+trigger_type = "type_a_story"
+trigger_id = "f1_toilet_childhood"
+narrative_text = "Bóng tối ở góc phòng vệ sinh gợi lại một ký ức tuổi thơ... Tiếng khóc thút thít của tớ trong khi trốn tránh cơn thịnh nộ bên ngoài."
+feedback_sound = "echo"
+fear_increase = 1
+truth_increase = 1
+
+[node name="Mirror" type="Area2D" parent="." index="5"]
+position = Vector2(576, 80)
+script = ExtResource("3_mirror")
+
+[node name="Sprite2D" type="Sprite2D" parent="Mirror"]
+scale = Vector2(1.2, 0.2)
+texture = ExtResource("4_icon")
+modulate = Color(0.4, 0.4, 0.4, 1)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Mirror"]
+shape = SubResource("CircleShape2D_mirror")

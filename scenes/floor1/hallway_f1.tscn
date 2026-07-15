@@ -1,12 +1,16 @@
-[gd_scene load_steps=10 format=3]
+[gd_scene load_steps=12 format=3]
 
 [ext_resource type="PackedScene" path="res://player/Player.tscn" id="1_player"]
 [ext_resource type="PackedScene" path="res://environment/Door.tscn" id="2_door"]
 [ext_resource type="PackedScene" path="res://environment/StairTransition.tscn" id="3_stair"]
 [ext_resource type="Script" path="res://scenes/floor1/hallway_event_trigger.gd" id="4_evt"]
 [ext_resource type="Script" path="res://scenes/floor1/hallway_f1_loop.gd" id="5_loop"]
-[ext_resource type="Script" path="res://environment/locked_door.gd" id="6_locked"]
+[ext_resource type="Script" path="res://scenes/floor1/exit_door.gd" id="6_locked"]
 [ext_resource type="Script" path="res://scenes/floor1/micro_cue_trigger.gd" id="7_micro"]
+[ext_resource type="PackedScene" path="res://components/MemoryTrigger.tscn" id="8_trigger"]
+[ext_resource type="PackedScene" path="res://components/ShadowEntity.tscn" id="9_shadow_entity"]
+
+
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_wall_h"]
 size = Vector2(1500, 20)
@@ -126,4 +130,18 @@ script = ExtResource("7_micro")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="MicroCueTrigger"]
 shape = SubResource("RectangleShape2D_micro_trigger")
 debug_color = Color(0.8, 0.8, 0.2, 0.3)
+
+[node name="HesitationTrigger" parent="." instance=ExtResource("8_trigger")]
+position = Vector2(500, 150)
+trigger_type = "type_a_story"
+trigger_id = "f1_hallway_hesitation"
+narrative_text = "Tớ luôn bước đi ngập ngừng ở dãy hành lang này. Có điều gì đó trong tiềm thức đang cố cản tớ tiến lên..."
+feedback_sound = "whisper"
+fear_increase = 1
+truth_increase = 1
+
+[node name="ShadowEntity" parent="." instance=ExtResource("9_shadow_entity")]
+position = Vector2(1300, 150)
+
+
 

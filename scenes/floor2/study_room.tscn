@@ -1,16 +1,14 @@
-[gd_scene load_steps=7 format=3]
+[gd_scene load_steps=8 format=3]
 
 [ext_resource type="PackedScene" path="res://scenes/RoomTemplate.tscn" id="1_template"]
 [ext_resource type="Script" path="res://scenes/floor2/study_room.gd" id="2_gd"]
 [ext_resource type="Script" path="res://components/key_item.gd" id="3_key"]
 [ext_resource type="Texture2D" path="res://icon.svg" id="4_icon"]
 [ext_resource type="Script" path="res://components/light_flicker.gd" id="5_flicker"]
+[ext_resource type="PackedScene" path="res://components/MemoryTrigger.tscn" id="6_trigger"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_key"]
 radius = 40.0
-
-[sub_resource type="CircleShape2D" id="CircleShape2D_light"]
-radius = 50.0
 
 [node name="StudyRoom" instance=ExtResource("1_template")]
 script = ExtResource("2_gd")
@@ -36,5 +34,13 @@ position = Vector2(576, 180)
 script = ExtResource("5_flicker")
 base_energy = 0.7
 flicker_intensity = 0.15
-texture_scale = 4.0
 color = Color(0.9, 0.85, 0.7, 1)
+
+[node name="EntranceTrigger" parent="." instance=ExtResource("6_trigger")]
+position = Vector2(576, 400)
+trigger_type = "type_a_story"
+trigger_id = "f2_study_entrance"
+narrative_text = "Bước vào căn phòng làm việc của bố... Tớ cảm thấy một áp lực đè nặng, như thể sự thật sắp bị phơi bày."
+feedback_sound = "whisper"
+fear_increase = 1
+truth_increase = 1

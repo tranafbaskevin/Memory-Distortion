@@ -1,10 +1,13 @@
-[gd_scene load_steps=9 format=3]
+[gd_scene load_steps=11 format=3]
 
 [ext_resource type="PackedScene" path="res://player/Player.tscn" id="1_player"]
 [ext_resource type="PackedScene" path="res://environment/Door.tscn" id="2_door"]
 [ext_resource type="PackedScene" path="res://environment/StairTransition.tscn" id="3_stair"]
 [ext_resource type="Script" path="res://scenes/floor2/hallway_f2_trigger.gd" id="4_trigger"]
 [ext_resource type="PackedScene" path="res://environment/EnvLockedDoor.tscn" id="5_locked_door"]
+[ext_resource type="PackedScene" path="res://components/MemoryTrigger.tscn" id="6_mem_trigger"]
+[ext_resource type="PackedScene" path="res://components/ShadowEntity.tscn" id="7_shadow_entity"]
+
 
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_wall_h"]
@@ -110,3 +113,16 @@ debug_color = Color(0.4, 0.1, 0.8, 0.35)
 
 [node name="Player" parent="." instance=ExtResource("1_player")]
 position = Vector2(180, 150)
+
+[node name="PortraitTrigger" parent="." instance=ExtResource("6_mem_trigger")]
+position = Vector2(750, 150)
+trigger_type = "type_a_story"
+trigger_id = "f2_hallway_portrait"
+narrative_text = "Bức chân dung gia đình treo trên tường hành lang... Đôi mắt của bố mẹ như biến dạng méo mó, nhìn chằm chằm vào tớ."
+feedback_sound = "whisper"
+fear_increase = 1
+truth_increase = 1
+
+[node name="ShadowEntity" parent="." instance=ExtResource("7_shadow_entity")]
+position = Vector2(1400, 150)
+

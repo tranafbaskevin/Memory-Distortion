@@ -28,8 +28,7 @@ func _interact(player: Node2D) -> void:
 		AudioManager.play_sfx_placeholder("distortion_sting")
 		Vignette.show_vignette(0.5, 0.5)
 		
-		await get_tree().create_timer(0.4).timeout
-		get_tree().change_scene_to_file(current_scene_path)
+		Transition.change_scene(current_scene_path, "SpawnPoint")
 	else:
 		# Hoạt động bình thường
 		AudioManager.play_door_open()

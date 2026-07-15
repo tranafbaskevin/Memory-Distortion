@@ -24,6 +24,7 @@ Vignette="*res://vignette.gd"
 SaveSystem="*res://save_system.gd"
 DistortionController="*res://distortion_controller.gd"
 RoomGateManager="*res://room_gate_manager.gd"
+Transition="*res://transition.gd"
 
 [display]
 

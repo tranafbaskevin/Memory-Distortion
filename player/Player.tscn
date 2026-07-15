@@ -42,3 +42,11 @@ text = "Nhấn E để tương tác"
 label_settings = SubResource("LabelSettings_prompt")
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="Flashlight" type="PointLight2D" parent="."]
+position = Vector2(0, 0)
+energy = 1.2
+color = Color(1, 0.95, 0.8, 1)
+texture = ExtResource("2_svg")
+texture_scale = 4.0
+

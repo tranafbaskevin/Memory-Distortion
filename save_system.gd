@@ -21,6 +21,8 @@ func save_game() -> void:
 	config.set_value("state", "player_spawn_name", Global.player_spawn_name)
 	config.set_value("state", "global_distortion_level", Global.global_distortion_level)
 	config.set_value("state", "elapsed_seconds", Global.elapsed_seconds)
+	config.set_value("state", "fear_level", Global.fear_level)
+	config.set_value("state", "truth_acceptance_level", Global.truth_acceptance_level)
 	
 	# Room visits
 	for room_id in Global.room_visits:
@@ -57,6 +59,8 @@ func load_game() -> void:
 	Global.player_spawn_name = config.get_value("state", "player_spawn_name", "")
 	Global.global_distortion_level = config.get_value("state", "global_distortion_level", 0)
 	Global.elapsed_seconds = config.get_value("state", "elapsed_seconds", 0.0)
+	Global.fear_level = config.get_value("state", "fear_level", 0)
+	Global.truth_acceptance_level = config.get_value("state", "truth_acceptance_level", 0)
 	
 	# Khôi phục room visits
 	if config.has_section("room_visits"):
@@ -86,6 +90,8 @@ func reset_game() -> void:
 	Global.global_distortion_level = 0
 	Global.elapsed_seconds = 0.0
 	Global.anchor_observations = {}
+	Global.fear_level = 0
+	Global.truth_acceptance_level = 0
 	
 	# Xoá file save
 	if FileAccess.file_exists(SAVE_PATH):

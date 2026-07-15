@@ -3,6 +3,8 @@ extends CharacterBody2D
 @export var speed: float = 250.0
 @export var acceleration: float = 0.2 # Gia tốc di chuyển mượt mà
 
+var speed_multiplier: float = 1.0
+
 var nearby_interactables: Array[Interactable] = []
 var current_interactable: Interactable = null
 
@@ -26,6 +28,8 @@ func _ready() -> void:
 			print("Warning: Spawn point node '", Global.player_spawn_name, "' not found!")
 		Global.player_spawn_name = ""
 
+var facing_direction: Vector2 = Vector2.DOWN
+
 func _physics_process(_delta: float) -> void:
 	var input_dir := Vector2.ZERO
 	
@@ -39,9 +43,17 @@ func _physics_process(_delta: float) -> void:
 	if Input.is_key_pressed(KEY_DOWN) or Input.is_key_pressed(KEY_S):
 		input_dir.y += 1
 		
-	var target_velocity = input_dir.normalized() * speed
+	if input_dir != Vector2.ZERO:
+		facing_direction = input_dir.normalized()
+		if has_node("Flashlight"):
+			get_node("Flashlight").rotation = facing_direction.angle()
+		
+	var target_velocity = input_dir.normalized() * (speed * speed_multiplier)
 	velocity = velocity.lerp(target_velocity, acceleration)
+
+
 	move_and_slide()
+
 
 # Bắt tín hiệu nhấn phím tương tác một lần duy nhất (không spam khi giữ đè phím)
 func _unhandled_input(event: InputEvent) -> void:

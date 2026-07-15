@@ -8,6 +8,9 @@ var player_spawn_name: String = ""
 var bedroom_distorted: bool = false
 var player_has_key: bool = false
 var distortion_events_count: int = 0
+var fear_level: int = 0             # Cấp độ sợ hãi (0-5)
+var truth_acceptance_level: int = 0 # Mức độ chấp nhận sự thật (0-5)
+
 
 # ─── ROOM TRACKING ────────────────────────────────────────────────────────────
 var room_visits: Dictionary = {}

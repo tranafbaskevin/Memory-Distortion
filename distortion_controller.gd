@@ -75,6 +75,10 @@ func _process(delta: float) -> void:
 		if _elapsed_seconds >= TIER_THRESHOLDS[tier] and current_tier < tier:
 			_set_tier(tier)
 			break
+			
+	# Cập nhật Vignette cơ bản dựa trên Fear Level
+	_update_fear_effects()
+
 
 func _set_tier(new_tier: int) -> void:
 	if new_tier == current_tier:
@@ -185,3 +189,15 @@ func resume_tracking() -> void:
 
 func get_elapsed_minutes() -> float:
 	return _elapsed_seconds / 60.0
+
+func _update_fear_effects() -> void:
+	var base_vignette = float(Global.fear_level) * 0.12
+	if Vignette.vignette_rect:
+		if Vignette.vignette_rect.visible:
+			var current = Vignette._get_intensity()
+			if not Vignette._tween or not Vignette._tween.is_valid():
+				Vignette._set_intensity(lerpf(current, base_vignette, 0.05))
+		else:
+			if base_vignette > 0.0:
+				Vignette.show_vignette(base_vignette, 2.0)
+
