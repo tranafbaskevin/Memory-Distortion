@@ -1,10 +1,11 @@
-[gd_scene load_steps=10 format=3]
+[gd_scene load_steps=12 format=3]
 
 [ext_resource type="PackedScene" path="res://scenes/RoomTemplate.tscn" id="1_template"]
 [ext_resource type="Script" path="res://components/interactable.gd" id="2_interactable"]
 [ext_resource type="Texture2D" path="res://icon.svg" id="3_icon"]
 [ext_resource type="Script" path="res://scenes/floor1/family_photo.gd" id="4_photo"]
 [ext_resource type="Script" path="res://components/light_flicker.gd" id="5_flicker"]
+[ext_resource type="Script" path="res://components/distorted_prop.gd" id="6_distorted_prop"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_tv"]
 size = Vector2(96, 64)
@@ -14,6 +15,9 @@ radius = 60.0
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_photo_detector"]
 radius = 50.0
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_sofa"]
+size = Vector2(160, 50)
 
 [node name="LivingRoom" instance=ExtResource("1_template")]
 
@@ -27,6 +31,8 @@ position = Vector2(576, 200)
 [node name="Sprite2D" type="Sprite2D" parent="TV"]
 scale = Vector2(1.5, 1.0)
 texture = ExtResource("3_icon")
+script = ExtResource("6_distorted_prop")
+prop_id = "tv"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="TV"]
 shape = SubResource("RectangleShape2D_tv")
@@ -58,3 +64,14 @@ texture = ExtResource("3_icon")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="FamilyPhoto"]
 shape = SubResource("CircleShape2D_photo_detector")
 
+[node name="Sofa" type="StaticBody2D" parent="." index="8"]
+position = Vector2(576, 450)
+
+[node name="Sprite2D" type="Sprite2D" parent="Sofa"]
+scale = Vector2(2.5, 0.8)
+texture = ExtResource("3_icon")
+script = ExtResource("6_distorted_prop")
+prop_id = "sofa"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Sofa"]
+shape = SubResource("RectangleShape2D_sofa")

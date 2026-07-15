@@ -39,11 +39,26 @@ func _update_door_state() -> void:
 			if light_hint:
 				light_hint.show()
 				light_hint.energy = 0.3
+				light_hint.color = Color(1.0, 0.95, 0.8, 1.0) # Ánh sáng vàng ấm
 		else:
 			if light_hint:
-				light_hint.hide()
+				light_hint.show()
+				light_hint.energy = 0.08
+				light_hint.color = Color(0.2, 0.2, 0.3, 1.0) # Ánh sáng xanh xám cực yếu
+	
+	# Đối với cửa unlocked hoặc locked thông thường, cung cấp ánh sáng định vị cực kỳ yếu
+	if door_state != "story_locked":
+		if light_hint:
+			light_hint.show()
+			if door_state == "locked":
+				light_hint.energy = 0.12
+				light_hint.color = Color(0.85, 0.2, 0.2, 1.0) # Ánh sáng đỏ báo khoá
+			else:
+				light_hint.energy = 0.15
+				light_hint.color = Color(0.75, 0.75, 0.8, 1.0) # Ánh sáng trắng xám mờ báo mở
 				
 	_update_prompt_message()
+
 
 func _update_prompt_message() -> void:
 	if door_state == "unlocked":

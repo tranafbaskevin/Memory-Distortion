@@ -1,15 +1,14 @@
-[gd_scene load_steps=8 format=3]
+[gd_scene load_steps=10 format=3]
 
 [ext_resource type="PackedScene" path="res://scenes/RoomTemplate.tscn" id="1_template"]
 [ext_resource type="Script" path="res://scenes/floor1/kitchen.gd" id="2_gd"]
 [ext_resource type="Script" path="res://components/anchor_object.gd" id="3_anchor"]
 [ext_resource type="Texture2D" path="res://icon.svg" id="4_icon"]
+[ext_resource type="Script" path="res://components/light_flicker.gd" id="5_flicker"]
+[ext_resource type="Script" path="res://components/distorted_prop.gd" id="6_prop"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_chair"]
 size = Vector2(56, 56)
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_note"]
-size = Vector2(80, 40)
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_note_interact"]
 radius = 55.0
@@ -27,14 +26,17 @@ position = Vector2(650, 380)
 [node name="Sprite2D" type="Sprite2D" parent="Chair"]
 scale = Vector2(0.875, 0.875)
 texture = ExtResource("4_icon")
+script = ExtResource("6_prop")
+prop_id = "kitchen_chair"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Chair"]
 shape = SubResource("RectangleShape2D_chair")
 
 [node name="KitchenLight" type="PointLight2D" parent="." index="5"]
 position = Vector2(576, 200)
-energy = 1.0
-texture_scale = 5.0
+script = ExtResource("5_flicker")
+base_energy = 0.8
+flicker_intensity = 0.15
 color = Color(1, 0.980392, 0.870588, 1)
 
 [node name="ClockAnchor" type="Area2D" parent="." index="6"]
@@ -48,7 +50,8 @@ changed_description = "Khoan đã... chiếc đồng hồ này đang chạy ngư
 scale = Vector2(0.4, 0.4)
 texture = ExtResource("4_icon")
 modulate = Color(0.6, 0.6, 0.6, 1)
+script = ExtResource("6_prop")
+prop_id = "kitchen_clock"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="ClockAnchor"]
 shape = SubResource("CircleShape2D_note_interact")
-

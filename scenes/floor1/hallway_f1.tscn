@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3]
+[gd_scene load_steps=13 format=3]
 
 [ext_resource type="PackedScene" path="res://player/Player.tscn" id="1_player"]
 [ext_resource type="PackedScene" path="res://environment/Door.tscn" id="2_door"]
@@ -9,6 +9,8 @@
 [ext_resource type="Script" path="res://scenes/floor1/micro_cue_trigger.gd" id="7_micro"]
 [ext_resource type="PackedScene" path="res://components/MemoryTrigger.tscn" id="8_trigger"]
 [ext_resource type="PackedScene" path="res://components/ShadowEntity.tscn" id="9_shadow_entity"]
+[ext_resource type="Script" path="res://components/light_flicker.gd" id="10_flicker"]
+
 
 
 
@@ -29,8 +31,14 @@ size = Vector2(80, 260)
 
 [node name="HallwayF1" type="Node2D"]
 
+[node name="Floor" type="ColorRect" parent="."]
+z_index = -1
+offset_right = 1500.0
+offset_bottom = 300.0
+color = Color(0.15, 0.14, 0.13, 1)
 
 [node name="Walls" type="StaticBody2D" parent="."]
+
 
 [node name="TopWall" type="CollisionShape2D" parent="Walls"]
 position = Vector2(750, 10)
@@ -120,8 +128,25 @@ position = Vector2(150, 150)
 
 [node name="ToiletDoorLight" type="PointLight2D" parent="."]
 position = Vector2(1100, 60)
-energy = 1.0
+script = ExtResource("10_flicker")
+base_energy = 0.8
+flicker_intensity = 0.15
 color = Color(1, 0.98, 0.9, 1)
+
+[node name="HallwayLight1" type="PointLight2D" parent="."]
+position = Vector2(400, 60)
+script = ExtResource("10_flicker")
+base_energy = 0.5
+flicker_intensity = 0.1
+color = Color(0.9, 0.9, 1, 1)
+
+[node name="HallwayLight2" type="PointLight2D" parent="."]
+position = Vector2(800, 60)
+script = ExtResource("10_flicker")
+base_energy = 0.5
+flicker_intensity = 0.1
+color = Color(0.9, 0.9, 1, 1)
+
 
 [node name="MicroCueTrigger" type="Area2D" parent="."]
 position = Vector2(1000, 150)
@@ -142,6 +167,10 @@ truth_increase = 1
 
 [node name="ShadowEntity" parent="." instance=ExtResource("9_shadow_entity")]
 position = Vector2(1300, 150)
+
+[node name="AmbientModulate" type="CanvasModulate" parent="."]
+color = Color(0.08, 0.08, 0.11, 1)
+
 
 
 

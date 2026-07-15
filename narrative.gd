@@ -48,6 +48,9 @@ func _ready() -> void:
 	hide_timer.timeout.connect(_on_timeout)
 	add_child(hide_timer)
 
+signal message_shown(text: String, duration: float)
+signal message_hidden
+
 # Hàm toàn cục để hiển thị lời thoại / suy nghĩ của nhân vật
 func show_message(text: String, duration: float = 3.0) -> void:
 	label.text = text
@@ -60,6 +63,7 @@ func show_message(text: String, duration: float = 3.0) -> void:
 	panel.position.y = get_viewport().get_visible_rect().size.y - panel.size.y - 40 # Cách mép dưới 40px
 	
 	hide_timer.start(duration)
+	message_shown.emit(text, duration)
 	print("[NARRATIVE] ", text)
 
 func show_text(text: String, duration: float = 3.0) -> void:
@@ -67,3 +71,5 @@ func show_text(text: String, duration: float = 3.0) -> void:
 
 func _on_timeout() -> void:
 	panel.hide()
+	message_hidden.emit()
+

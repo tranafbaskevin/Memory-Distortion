@@ -21,7 +21,14 @@ size = Vector2(120, 280)
 
 [node name="HallwayF2" type="Node2D"]
 
+[node name="Floor" type="ColorRect" parent="."]
+z_index = -1
+offset_right = 2000.0
+offset_bottom = 300.0
+color = Color(0.15, 0.14, 0.13, 1)
+
 [node name="Walls" type="StaticBody2D" parent="."]
+
 
 [node name="TopWall" type="CollisionShape2D" parent="Walls"]
 position = Vector2(1000, 10)
@@ -125,4 +132,8 @@ truth_increase = 1
 
 [node name="ShadowEntity" parent="." instance=ExtResource("7_shadow_entity")]
 position = Vector2(1400, 150)
+
+[node name="AmbientModulate" type="CanvasModulate" parent="."]
+color = Color(0.08, 0.08, 0.11, 1)
+
 
