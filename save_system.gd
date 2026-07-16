@@ -23,6 +23,8 @@ func save_game() -> void:
 	config.set_value("state", "elapsed_seconds", Global.elapsed_seconds)
 	config.set_value("state", "fear_level", Global.fear_level)
 	config.set_value("state", "truth_acceptance_level", Global.truth_acceptance_level)
+	config.set_value("state", "denial_level", Global.denial_level)
+	config.set_value("state", "loop_depth", Global.loop_depth)
 	
 	# Room visits
 	for room_id in Global.room_visits:
@@ -61,6 +63,8 @@ func load_game() -> void:
 	Global.elapsed_seconds = config.get_value("state", "elapsed_seconds", 0.0)
 	Global.fear_level = config.get_value("state", "fear_level", 0)
 	Global.truth_acceptance_level = config.get_value("state", "truth_acceptance_level", 0)
+	Global.denial_level = config.get_value("state", "denial_level", 0)
+	Global.loop_depth = config.get_value("state", "loop_depth", 0)
 	
 	# Khôi phục room visits
 	if config.has_section("room_visits"):
@@ -92,6 +96,8 @@ func reset_game() -> void:
 	Global.anchor_observations = {}
 	Global.fear_level = 0
 	Global.truth_acceptance_level = 0
+	Global.denial_level = 0
+	Global.loop_depth = 0
 	
 	# Xoá file save
 	if FileAccess.file_exists(SAVE_PATH):

@@ -44,7 +44,19 @@ func interact(player: Node2D) -> void:
 	
 	# Hiển thị hội thoại thông qua Autoload Narrative
 	if dialogue_text != "":
-		Narrative.show_message(dialogue_text)
+		var display_text = dialogue_text
+		# SYSTEM 5: Memory Confusion (Khi bị lặp >= 2, chữ sẽ phủ định ký ức của player)
+		if Global.loop_depth >= 2:
+			var suffixes = [
+				" ...Nhưng đợi đã, ký ức của tớ không giống thế này. Có gì đó đã bị sửa đổi.",
+				" ...Hình như nét chữ này không phải của tớ? Ai đó đang giả mạo ký ức.",
+				" ...Tớ chắc chắn đồ vật này trước đây ở phòng khác. Tại sao nó lại ở đây?",
+				" ...Mọi thứ đang sụp đổ. Tớ cảm thấy mình không kiểm soát được tâm trí nữa."
+			]
+			var idx = (Global.loop_depth + name.hash()) % suffixes.size()
+			display_text += suffixes[idx]
+		Narrative.show_message(display_text)
+
 
 # Hàm ảo có thể được override bởi các script kế thừa (như Cửa)
 func _interact(_player: Node2D) -> void:

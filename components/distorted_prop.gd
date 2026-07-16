@@ -12,7 +12,7 @@ func _ready() -> void:
 	add_to_group("DistortedProp")
 	
 	# SYSTEM 1: Room State Drift (lệch nhẹ vị trí và góc xoay ban đầu khi load scene)
-	var fear = Global.fear_level
+	var fear = Global.fear_level + Global.loop_depth
 	if fear > 0:
 		# Độ lệch vị trí tối đa 18px tương ứng với fear level 5
 		var drift_x = randf_range(-18.0, 18.0) * (float(fear) / 5.0)
@@ -43,8 +43,8 @@ func _ready() -> void:
 		DistortionController.tier_changed.connect(_on_tier_changed)
 
 func _process(_delta: float) -> void:
-	# Nếu Fear Level >= 2, prop co giãn nhẹ nhàng một cách kỳ lạ (như đang thở)
-	var fear = Global.fear_level
+	# Nếu Fear + Loop >= 2, prop co giãn nhẹ nhàng một cách kỳ lạ (như đang thở)
+	var fear = Global.fear_level + Global.loop_depth
 	if fear >= 2 and visible:
 		var time = Time.get_ticks_msec() / 1000.0
 		var wobble = sin(time * 1.5) * (float(fear) * 0.012)
@@ -55,14 +55,15 @@ func _on_tier_changed(_new_tier: int) -> void:
 	_apply_distortion()
 
 func _apply_distortion() -> void:
-	var fear = Global.fear_level
+	var fear = Global.fear_level + Global.loop_depth
 	
-	# Góc xoay bị lệch nhẹ theo nỗi sợ
+	# Góc xoay bị lệch nhẹ theo nỗi sợ và số lần loop
 	rotation = _base_rotation + (fear * 0.025)
 	
-	# Hao mòn màu sắc
-	var color_darkness = clampf(1.0 - fear * 0.12, 0.45, 1.0)
+	# Hao mòn màu sắc (đen tối dần)
+	var color_darkness = clampf(1.0 - fear * 0.12, 0.4, 1.0)
 	modulate = Color(color_darkness, color_darkness * 0.92, color_darkness * 0.88, 1.0)
 	
-	print("[DistortedProp] Prop: ", name, " | Fear: ", fear, " | Rot: ", rotation, " | Color: ", color_darkness)
+	print("[DistortedProp] Prop: ", name, " | Scaled Fear: ", fear, " | Rot: ", rotation, " | Color: ", color_darkness)
+
 

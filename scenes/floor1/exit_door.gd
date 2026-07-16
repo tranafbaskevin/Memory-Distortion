@@ -48,26 +48,39 @@ func _resolve_puzzle(accept_truth: bool) -> void:
 		Global.truth_acceptance_level = clampi(Global.truth_acceptance_level + 2, 0, 5)
 		SaveSystem.save_game()
 		
+		# Đọc trạng thái giải đố từ cả Mirror puzzle và Blind Spot puzzle
 		var has_mirror_clue = Global.unlocked_rooms.get("mirror_puzzle_solved", false)
+		var has_blind_spot_clue = Global.unlocked_rooms.get("blind_spot_solved", false)
 		
-		# Cần ít nhất Truth level >= 3 và đã giải Mirror puzzle để đạt True Ending
-		if Global.truth_acceptance_level >= 3 and has_mirror_clue:
+		# Cần giải cả 2 puzzle và Acceptance Level >= 3 để đạt True Ending
+		if Global.truth_acceptance_level >= 3 and has_mirror_clue and has_blind_spot_clue:
 			Narrative.show_message("Tớ chấp nhận mọi thứ. Ký ức này là của tớ, tội lỗi này là của tớ. Cửa mở ra...", 4.5)
 			AudioManager.play_door_open()
 			await get_tree().create_timer(3.0).timeout
-			Transition.change_scene("res://scenes/ending_stub.tscn")
+			Transition.change_scene("res://scenes/true_ending.tscn")
 		else:
-			# Chưa đủ bằng chứng để tự thuyết phục
-			Narrative.show_message("Tớ cố chấp nhận... nhưng sâu trong lòng tớ vẫn hoài nghi và sợ hãi. (Tớ cần tìm thêm bằng chứng ở chiếc gương...)", 5.0)
+			# Chưa đủ bằng chứng để tự thuyết phục bản thân
+			Narrative.show_message("Tớ cố chấp nhận... nhưng sâu trong lòng tớ vẫn hoài nghi và sợ hãi. (Tớ cần tìm thêm bằng chứng ở chiếc gương và chiếc tủ gỗ phòng ngủ...)", 5.5)
 	else:
-		# Người chơi phủ nhận sự thật -> Tạo vòng lặp vô tận (Denial maintains loop)
-		Narrative.show_message("Không phải tớ! Tất cả là do bố! Tớ phải chạy thoát khỏi đây!", 4.0)
-		AudioManager.play_sfx_placeholder("loop_reset_scary")
+		# Người chơi phủ nhận sự thật -> Tăng loop_depth và denial_level
+		Global.loop_depth += 1
+		Global.denial_level = clampi(Global.denial_level + 1, 0, 5)
+		Global.bedroom_distorted = false # Reset để chơi lại
+		SaveSystem.save_game()
 		
-		# Tăng Fear Level khi bị loop lại
-		Global.fear_level = clampi(Global.fear_level + 1, 0, 5)
-		Global.bedroom_distorted = false # Reset trạng thái méo mó phòng ngủ để chơi lại
-		
-		await get_tree().create_timer(3.5).timeout
-		# Dịch chuyển player trở lại điểm bắt đầu F1 Hallway
-		Transition.change_scene("res://scenes/floor1/hallway_f1.tscn", "SpawnStart")
+		# Nếu bị lặp lại quá sâu (từ 3 lần trở lên), giam cầm vĩnh viễn
+		if Global.loop_depth >= 3:
+			Narrative.show_message("Không! Không phải tớ! Tất cả là do bố! Tớ phải chạy thoát khỏi đây!", 4.0)
+			AudioManager.play_sfx_placeholder("loop_reset_scary")
+			await get_tree().create_timer(3.5).timeout
+			Transition.change_scene("res://scenes/infinite_loop_ending.tscn")
+		else:
+			# Vòng lặp tiếp diễn, đưa về đầu Hallway F1
+			Narrative.show_message("Không phải tớ! Tất cả là do bố! Tớ phải chạy thoát khỏi đây!", 4.0)
+			AudioManager.play_sfx_placeholder("loop_reset_scary")
+			
+			# Tăng Fear Level khi bị loop lại
+			Global.fear_level = clampi(Global.fear_level + 1, 0, 5)
+			
+			await get_tree().create_timer(3.5).timeout
+			Transition.change_scene("res://scenes/floor1/hallway_f1.tscn", "SpawnStart")
