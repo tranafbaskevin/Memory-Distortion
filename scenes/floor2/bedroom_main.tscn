@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3]
+[gd_scene load_steps=12 format=3]
 
 [ext_resource type="PackedScene" path="res://scenes/RoomTemplate.tscn" id="1_template"]
 [ext_resource type="Script" path="res://scenes/floor2/bedroom_main.gd" id="2_gd"]
@@ -6,7 +6,7 @@
 [ext_resource type="Texture2D" path="res://icon.svg" id="4_icon"]
 [ext_resource type="PackedScene" path="res://components/MemoryTrigger.tscn" id="5_trigger"]
 [ext_resource type="PackedScene" path="res://components/ShadowEntity.tscn" id="6_shadow"]
-
+[ext_resource type="Script" path="res://components/blind_spot_cabinet.gd" id="7_cabinet"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_desk"]
 size = Vector2(80, 50)
@@ -17,6 +17,9 @@ radius = 50.0
 [sub_resource type="CircleShape2D" id="CircleShape2D_note"]
 radius = 45.0
 
+[sub_resource type="CircleShape2D" id="CircleShape2D_cabinet"]
+radius = 65.0
+
 [node name="BedroomMain" instance=ExtResource("1_template")]
 script = ExtResource("2_gd")
 
@@ -25,17 +28,18 @@ target_scene = "res://scenes/floor2/hallway_f2.tscn"
 target_spawn_name = "SpawnFromBedroomMain"
 
 [node name="Desk" type="StaticBody2D" parent="." index="4"]
-position = Vector2(400, 250)
+position = Vector2(350, 480)
 
 [node name="Sprite2D" type="Sprite2D" parent="Desk"]
-scale = Vector2(1.25, 0.78125)
+scale = Vector2(1.25, 0.78)
 texture = ExtResource("4_icon")
+modulate = Color(0.42, 0.35, 0.28, 1)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Desk"]
 shape = SubResource("RectangleShape2D_desk")
 
 [node name="Diary" type="Area2D" parent="." index="5"]
-position = Vector2(400, 250)
+position = Vector2(350, 480)
 script = ExtResource("3_interactable")
 prompt_message = "Nhấn E để đọc nhật ký"
 
@@ -70,3 +74,14 @@ truth_increase = 1
 [node name="ShadowEntity" parent="." instance=ExtResource("6_shadow")]
 position = Vector2(950, 150)
 
+[node name="BlindSpotCabinet" type="Area2D" parent="." index="9"]
+position = Vector2(250, 180)
+script = ExtResource("7_cabinet")
+
+[node name="Sprite2D" type="Sprite2D" parent="BlindSpotCabinet"]
+scale = Vector2(1.2, 0.8)
+texture = ExtResource("4_icon")
+modulate = Color(0.36, 0.25, 0.16, 1)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="BlindSpotCabinet"]
+shape = SubResource("CircleShape2D_cabinet")
