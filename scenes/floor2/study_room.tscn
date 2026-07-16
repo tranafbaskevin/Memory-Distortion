@@ -14,8 +14,8 @@ radius = 40.0
 script = ExtResource("2_gd")
 
 [node name="DoorToHallway" parent="."]
-target_scene = "res://scenes/floor2/hallway_f2.tscn"
-target_spawn_name = "SpawnFromStudy"
+target_scene = "res://scenes/house.tscn"
+target_spawn_name = "SpawnFromStudyRoom"
 
 [node name="Key" type="Area2D" parent="." index="4"]
 position = Vector2(800, 200)

@@ -14,6 +14,10 @@ var _puzzle_solved: bool = false
 var _layout_shrunk_count: int = 0
 
 func _ready() -> void:
+	var title_label = get_node_or_null("RoomTitleOverlay/TitleLabel")
+	if title_label:
+		title_label.text = "HIỆN TRƯỜNG VỤ ÁN"
+
 	AudioManager.play_ambient_for_scene(scene_file_path)
 	
 	if photo:

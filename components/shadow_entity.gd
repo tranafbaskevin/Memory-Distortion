@@ -25,6 +25,14 @@ func _ready() -> void:
 		
 	print("[ShadowEntity] Shadow spawned at: ", global_position, " (Fear Level: ", fear, ")")
 	
+	# Shadow Debug Rect (Đen = entity)
+	var rect = ColorRect.new()
+	rect.color = Color(0.0, 0.0, 0.0, 0.8)
+	rect.size = Vector2(28, 28)
+	rect.position = -rect.size / 2
+	rect.set_script(load("res://components/debug_rect.gd"))
+	add_child(rect)
+	
 	# Đăng ký vào nhóm thực thể tâm lý
 	add_to_group("PsychologicalEntity")
 	

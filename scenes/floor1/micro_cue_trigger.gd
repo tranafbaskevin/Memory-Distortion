@@ -1,27 +1,18 @@
-## MicroCueTrigger — Sự kiện micro-unease ở phút 1:30
-## Giải quyết Testarossa Drop #1:
-## Khoảng trống sau unease cue không được "nguội" — cần texture âm thanh liên tục
-## Cue này: đèn toilet nhấp nháy 1 lần khi player đi ngang → không có giải thích
-## Đủ để gây "có gì đó lạ" mà không dạy player "distortion tồn tại"
-extends Area2D
+extends BaseTrigger
 
-var _has_triggered: bool = false
+func _custom_ready() -> void:
+	require_interaction = false
 
-func _ready() -> void:
-	body_entered.connect(_on_body_entered)
-
-func _on_body_entered(body: Node2D) -> void:
-	if not body.is_in_group("Player"):
+func _on_trigger_fired(player: Node2D) -> void:
+	if not is_instance_valid(player):
 		return
-	if _has_triggered:
-		return
-	
+		
 	# Chỉ kích hoạt nếu đã qua 60 giây (player có thời gian học không gian)
 	# Và Controller đang ở Tier 0→1 (chưa có distortion chính thức)
 	if DistortionController.get_elapsed_minutes() < 1.0:
+		has_triggered = false # Cho phép thử lại lần sau nếu chưa đủ thời gian
 		return
-	
-	_has_triggered = true
+		
 	_trigger_micro_cue()
 
 func _trigger_micro_cue() -> void:
@@ -42,5 +33,4 @@ func _trigger_micro_cue() -> void:
 	AudioManager.play_sfx_placeholder("light_buzz_brief")
 	
 	# KHÔNG có lời thoại. Không có giải thích.
-	# Sự im lặng sau đó là phần quan trọng nhất.
 	print("[MicroCueTrigger] Micro-cue fired at ", "%.1f" % DistortionController.get_elapsed_minutes(), " min")

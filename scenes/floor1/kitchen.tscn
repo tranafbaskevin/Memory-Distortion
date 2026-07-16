@@ -17,7 +17,7 @@ radius = 55.0
 script = ExtResource("2_gd")
 
 [node name="DoorToHallway" parent="."]
-target_scene = "res://scenes/floor1/hallway_f1.tscn"
+target_scene = "res://scenes/house.tscn"
 target_spawn_name = "SpawnFromKitchen"
 
 [node name="Chair" type="StaticBody2D" parent="." index="4"]

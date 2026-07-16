@@ -1,0 +1,35 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scenes/debug_ui.gd" id="1_gd"]
+
+[node name="DebugUI" type="CanvasLayer"]
+layer = 15
+script = ExtResource("1_gd")
+
+[node name="Control" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 400.0
+offset_bottom = 200.0
+
+[node name="ColorRect" type="ColorRect" parent="Control"]
+layout_mode = 0
+offset_left = 10.0
+offset_top = 10.0
+offset_right = 320.0
+offset_bottom = 140.0
+color = Color(0, 0, 0, 0.65)
+
+[node name="Label" type="Label" parent="Control"]
+layout_mode = 0
+offset_left = 20.0
+offset_top = 15.0
+offset_right = 310.0
+offset_bottom = 135.0
+theme_override_colors/font_color = Color(0.9, 0.9, 0.9, 1)
+text = "=== DEBUG INTERFACE (F3) ===
+Fear Level: 0 / 5
+Acceptance: 0 / 5
+Denial Level: 0 / 5
+Loop Depth: 0"
+vertical_alignment = 1

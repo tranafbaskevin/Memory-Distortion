@@ -7,6 +7,10 @@ extends Node2D
 @onready var player = $Player
 
 func _ready() -> void:
+	var title_label = get_node_or_null("RoomTitleOverlay/TitleLabel")
+	if title_label:
+		title_label.text = "PHÒNG LÀM VIỆC"
+
 	AudioManager.play_ambient_for_scene(scene_file_path, Global.bedroom_distorted)
 	
 	# Nếu đã nhặt khoá → khoá tự ẩn (xử lý bởi key_item.gd)

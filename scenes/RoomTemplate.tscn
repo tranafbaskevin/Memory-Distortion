@@ -1,7 +1,8 @@
-[gd_scene load_steps=5 format=3]
+[gd_scene load_steps=6 format=3]
 
 [ext_resource type="PackedScene" path="res://player/Player.tscn" id="1_player"]
 [ext_resource type="PackedScene" path="res://environment/Door.tscn" id="2_door"]
+[ext_resource type="PackedScene" path="res://scenes/debug_ui.tscn" id="3_debug_ui"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_wall_h"]
 size = Vector2(1152, 20)
@@ -19,7 +20,6 @@ color = Color(0.16, 0.15, 0.14, 1)
 
 [node name="Walls" type="StaticBody2D" parent="."]
 
-
 [node name="TopWall" type="CollisionShape2D" parent="Walls"]
 position = Vector2(576, 10)
 shape = SubResource("RectangleShape2D_wall_h")
@@ -36,6 +36,28 @@ shape = SubResource("RectangleShape2D_wall_v")
 position = Vector2(1142, 324)
 shape = SubResource("RectangleShape2D_wall_v")
 
+[node name="TopWallVisual" type="ColorRect" parent="Walls"]
+offset_right = 1152.0
+offset_bottom = 20.0
+color = Color(0.164706, 0.164706, 0.164706, 1) # #2a2a2a xám đậm
+
+[node name="BottomWallVisual" type="ColorRect" parent="Walls"]
+offset_top = 628.0
+offset_right = 1152.0
+offset_bottom = 648.0
+color = Color(0.164706, 0.164706, 0.164706, 1) # #2a2a2a xám đậm
+
+[node name="LeftWallVisual" type="ColorRect" parent="Walls"]
+offset_right = 20.0
+offset_bottom = 648.0
+color = Color(0.164706, 0.164706, 0.164706, 1) # #2a2a2a xám đậm
+
+[node name="RightWallVisual" type="ColorRect" parent="Walls"]
+offset_left = 1132.0
+offset_right = 1152.0
+offset_bottom = 648.0
+color = Color(0.164706, 0.164706, 0.164706, 1) # #2a2a2a xám đậm
+
 [node name="SpawnPoint" type="Marker2D" parent="."]
 position = Vector2(576, 324)
 
@@ -48,3 +70,16 @@ position = Vector2(576, 324)
 [node name="AmbientModulate" type="CanvasModulate" parent="."]
 color = Color(0.08, 0.08, 0.11, 1)
 
+[node name="DebugUI" parent="." instance=ExtResource("3_debug_ui")]
+
+[node name="RoomTitleOverlay" type="CanvasLayer" parent="."]
+layer = 5
+
+[node name="TitleLabel" type="Label" parent="RoomTitleOverlay"]
+offset_left = 400.0
+offset_top = 20.0
+offset_right = 752.0
+offset_bottom = 50.0
+theme_override_colors/font_color = Color(0.8, 0.8, 0.8, 0.6)
+text = "Căn Phòng Ký Ức"
+horizontal_alignment = 1

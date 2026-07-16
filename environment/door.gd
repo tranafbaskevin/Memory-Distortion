@@ -15,6 +15,9 @@ var _player_nearby: bool = false
 var _foreshadow_timer: float = 0.0
 const FORESHADOW_INTERVAL: float = 8.0
 
+var _base_position: Vector2
+var _debug_print_timer: float = 0.0
+
 @onready var light_hint: PointLight2D = get_node_or_null("LightHint")
 @onready var prompt_label: Label = get_node_or_null("PromptLabel")
 
@@ -24,13 +27,24 @@ func _ready() -> void:
 	body_entered.connect(_on_body_entered)
 	body_exited.connect(_on_body_exited)
 	
+	# Lưu vị trí ban đầu làm Failsafe anchor
+	_base_position = position
+	z_index = 5 # Đảm bảo Door luôn render phía trước Player
+	
+	# Door Debug Rect (Đỏ = cửa)
+	var rect = ColorRect.new()
+	rect.color = Color(1.0, 0.0, 0.0, 0.6)
+	rect.size = Vector2(32, 48)
+	rect.position = -rect.size / 2
+	rect.set_script(load("res://components/debug_rect.gd"))
+	add_child(rect)
+	
 	if RoomGateManager.has_signal("room_state_changed"):
 		RoomGateManager.room_state_changed.connect(_on_room_state_changed)
 	
 	_update_door_state()
 
 func _update_door_state() -> void:
-	# Nếu là story_locked, kiểm tra RoomGateManager để đồng bộ trạng thái thực tế
 	if door_state == "story_locked" and room_id != "":
 		var state = RoomGateManager.get_room_state(room_id)
 		if state == RoomGateManager.RoomState.UNLOCKED:
@@ -39,26 +53,24 @@ func _update_door_state() -> void:
 			if light_hint:
 				light_hint.show()
 				light_hint.energy = 0.3
-				light_hint.color = Color(1.0, 0.95, 0.8, 1.0) # Ánh sáng vàng ấm
+				light_hint.color = Color(1.0, 0.95, 0.8, 1.0)
 		else:
 			if light_hint:
 				light_hint.show()
 				light_hint.energy = 0.08
-				light_hint.color = Color(0.2, 0.2, 0.3, 1.0) # Ánh sáng xanh xám cực yếu
+				light_hint.color = Color(0.2, 0.2, 0.3, 1.0)
 	
-	# Đối với cửa unlocked hoặc locked thông thường, cung cấp ánh sáng định vị cực kỳ yếu
 	if door_state != "story_locked":
 		if light_hint:
 			light_hint.show()
 			if door_state == "locked":
 				light_hint.energy = 0.12
-				light_hint.color = Color(0.85, 0.2, 0.2, 1.0) # Ánh sáng đỏ báo khoá
+				light_hint.color = Color(0.85, 0.2, 0.2, 1.0)
 			else:
 				light_hint.energy = 0.15
-				light_hint.color = Color(0.75, 0.75, 0.8, 1.0) # Ánh sáng trắng xám mờ báo mở
+				light_hint.color = Color(0.75, 0.75, 0.8, 1.0)
 				
 	_update_prompt_message()
-
 
 func _update_prompt_message() -> void:
 	if door_state == "unlocked":
@@ -72,13 +84,37 @@ func _update_prompt_message() -> void:
 		prompt_message = "Cửa không mở..."
 
 func _process(delta: float) -> void:
+	# ─── MANDATORY INTEGRITY CHECKS ───
+	# 1. Đảm bảo Door luôn visible & collision active
+	if not visible:
+		visible = true
+	if modulate.a < 1.0:
+		modulate.a = 1.0
+	if not monitoring:
+		monitoring = true
+	if not monitorable:
+		monitorable = true
+		
+	# 2. Failsafe position: kiểm tra nếu cửa bị văng ra khỏi biên giới căn phòng
+	var current_scene_name = get_tree().current_scene.name
+	if current_scene_name != "House" and current_scene_name != "TrueEnding" and current_scene_name != "InfiniteLoopEnding" and current_scene_name != "BrokenEnding":
+		# Nếu là phòng phụ (độ rộng chuẩn 1152x648)
+		if position.x < 10.0 or position.x > 1142.0 or position.y < 10.0 or position.y > 638.0:
+			print("[DEBUG] Door fail! Door position out of bounds: ", position, ". Respawning at base position: ", _base_position)
+			position = _base_position
+			
+	# 3. Định kỳ in debug log trạng thái (không spam mỗi frame, 5s một lần)
+	_debug_print_timer += delta
+	if _debug_print_timer >= 5.0:
+		_debug_print_timer = 0.0
+		print("[DEBUG] Door Name: ", name, " | Pos: ", position, " | Visible: ", visible, " | Monitoring: ", monitoring)
+
+	# ─── NARRATIVE / FORESHADOW LOGIC ───
 	if not _player_nearby:
 		return
 	
-	# Cập nhật prompt liên tục
 	_update_prompt_message()
 	
-	# Foreshadow audio định kỳ nếu đang ở trạng thái story_locked & foreshadow
 	if door_state == "story_locked" and room_id != "":
 		if RoomGateManager.is_foreshadow(room_id):
 			_foreshadow_timer += delta
@@ -123,12 +159,10 @@ func _handle_locked(player: Node2D, message: String, is_story: bool = false) -> 
 	AudioManager.play_door_locked()
 	Narrative.show_message(message, 3.0)
 	
-	# Rung camera nhẹ (giật tay nắm)
 	var camera = player.find_child("Camera2D", true, false)
 	if camera:
 		camera.shake(2.0, 0.15, 22.0)
 	
-	# Hiệu ứng light hint pulse nếu có đèn
 	if light_hint:
 		var tween = create_tween()
 		tween.tween_property(light_hint, "energy", 0.8, 0.1)

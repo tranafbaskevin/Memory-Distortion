@@ -15,6 +15,15 @@ func _ready() -> void:
 	# Thêm vào nhóm để Player dễ dàng quét và nhận diện Area2D này
 	add_to_group("Interactable")
 	_setup_interaction_glow()
+	
+	# Interactable Debug Rect (Xanh lá = vật tương tác, trừ Cửa)
+	if not has_method("_update_door_state"):
+		var rect = ColorRect.new()
+		rect.color = Color(0.0, 1.0, 0.0, 0.6)
+		rect.size = Vector2(24, 24)
+		rect.position = -rect.size / 2
+		rect.set_script(load("res://components/debug_rect.gd"))
+		add_child(rect)
 
 func _setup_interaction_glow() -> void:
 	# Không tự động tạo glow cho Cửa (Cửa đã tự quản lý LightHint riêng biệt)

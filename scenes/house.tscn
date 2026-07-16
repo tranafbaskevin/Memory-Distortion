@@ -1,0 +1,237 @@
+[gd_scene load_steps=12 format=3]
+
+[ext_resource type="Script" path="res://scenes/house.gd" id="6_gd"]
+[ext_resource type="PackedScene" path="res://player/Player.tscn" id="1_player"]
+[ext_resource type="PackedScene" path="res://environment/Door.tscn" id="2_door"]
+[ext_resource type="Script" path="res://scenes/floor1/exit_door.gd" id="3_exit_door_script"]
+[ext_resource type="PackedScene" path="res://scenes/debug_ui.tscn" id="4_debug_ui"]
+[ext_resource type="Texture2D" path="res://icon.svg" id="5_icon"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_wall"]
+size = Vector2(40, 400)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_stair"]
+size = Vector2(80, 80)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_horizontal"]
+size = Vector2(800, 40)
+
+[node name="House" type="Node2D"]
+script = ExtResource("6_gd")
+
+[node name="Floor1" type="Node2D" parent="."]
+
+[node name="FloorVisual" type="ColorRect" parent="Floor1"]
+offset_left = 100.0
+offset_top = 50.0
+offset_right = 1052.0
+offset_bottom = 600.0
+color = Color(0.16, 0.15, 0.14, 1)
+
+[node name="TopWall" type="ColorRect" parent="Floor1"]
+offset_left = 100.0
+offset_top = 50.0
+offset_right = 1052.0
+offset_bottom = 90.0
+color = Color(0.164706, 0.164706, 0.164706, 1) # #2a2a2a
+
+[node name="BottomWall" type="ColorRect" parent="Floor1"]
+offset_left = 100.0
+offset_top = 560.0
+offset_right = 1052.0
+offset_bottom = 600.0
+color = Color(0.164706, 0.164706, 0.164706, 1) # #2a2a2a
+
+[node name="LeftWall" type="ColorRect" parent="Floor1"]
+offset_left = 100.0
+offset_top = 90.0
+offset_right = 140.0
+offset_bottom = 560.0
+color = Color(0.164706, 0.164706, 0.164706, 1) # #2a2a2a
+
+[node name="RightWall" type="ColorRect" parent="Floor1"]
+offset_left = 1012.0
+offset_top = 90.0
+offset_right = 1052.0
+offset_bottom = 560.0
+color = Color(0.164706, 0.164706, 0.164706, 1) # #2a2a2a
+
+[node name="CollisionWalls" type="StaticBody2D" parent="Floor1"]
+
+[node name="Left" type="CollisionShape2D" parent="Floor1/CollisionWalls"]
+position = Vector2(120, 325)
+shape = SubResource("RectangleShape2D_wall")
+
+[node name="Right" type="CollisionShape2D" parent="Floor1/CollisionWalls"]
+position = Vector2(1032, 325)
+shape = SubResource("RectangleShape2D_wall")
+
+[node name="Top" type="CollisionShape2D" parent="Floor1/CollisionWalls"]
+position = Vector2(576, 70)
+shape = SubResource("RectangleShape2D_horizontal")
+
+[node name="Bottom" type="CollisionShape2D" parent="Floor1/CollisionWalls"]
+position = Vector2(576, 580)
+shape = SubResource("RectangleShape2D_horizontal")
+
+[node name="SpawnStart" type="Marker2D" parent="Floor1"]
+position = Vector2(576, 324)
+
+[node name="SpawnFromKitchen" type="Marker2D" parent="Floor1"]
+position = Vector2(240, 324)
+
+[node name="SpawnFromLivingRoom" type="Marker2D" parent="Floor1"]
+position = Vector2(912, 324)
+
+[node name="SpawnFromToiletF1" type="Marker2D" parent="Floor1"]
+position = Vector2(576, 180)
+
+[node name="SpawnFromStairsF2" type="Marker2D" parent="Floor1"]
+position = Vector2(750, 320)
+
+[node name="DoorToKitchen" parent="Floor1" instance=ExtResource("2_door")]
+position = Vector2(160, 324)
+rotation = 1.5708
+target_scene = "res://scenes/floor1/kitchen.tscn"
+target_spawn_name = "SpawnPoint"
+
+[node name="DoorToLivingRoom" parent="Floor1" instance=ExtResource("2_door")]
+position = Vector2(990, 324)
+rotation = -1.5708
+target_scene = "res://scenes/floor1/living_room.tscn"
+target_spawn_name = "SpawnPoint"
+
+[node name="DoorToToilet" parent="Floor1" instance=ExtResource("2_door")]
+position = Vector2(576, 110)
+target_scene = "res://scenes/floor1/toilet_f1.tscn"
+target_spawn_name = "SpawnPoint"
+
+[node name="ExitDoor" parent="Floor1" instance=ExtResource("2_door")]
+position = Vector2(576, 540)
+rotation = 3.14159
+script = ExtResource("3_exit_door_script")
+target_scene = "res://scenes/hospital.tscn"
+target_spawn_name = "SpawnPoint"
+
+[node name="StairToFloor2" type="Area2D" parent="Floor1"]
+position = Vector2(750, 220)
+
+[node name="Sprite2D" type="Sprite2D" parent="Floor1/StairToFloor2"]
+scale = Vector2(0.6, 0.6)
+texture = ExtResource("5_icon")
+modulate = Color(0.8, 0.7, 0.2, 1)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Floor1/StairToFloor2"]
+shape = SubResource("RectangleShape2D_stair")
+
+[node name="Label" type="Label" parent="Floor1/StairToFloor2"]
+offset_left = -60.0
+offset_top = -60.0
+offset_right = 60.0
+offset_bottom = -40.0
+text = "Leo lên tầng 2"
+horizontal_alignment = 1
+
+[node name="Floor2" type="Node2D" parent="."]
+position = Vector2(0, 800)
+
+[node name="FloorVisual" type="ColorRect" parent="Floor2"]
+offset_left = 100.0
+offset_top = 50.0
+offset_right = 1052.0
+offset_bottom = 600.0
+color = Color(0.14, 0.14, 0.16, 1)
+
+[node name="TopWall" type="ColorRect" parent="Floor2"]
+offset_left = 100.0
+offset_top = 50.0
+offset_right = 1052.0
+offset_bottom = 90.0
+color = Color(0.164706, 0.164706, 0.164706, 1)
+
+[node name="BottomWall" type="ColorRect" parent="Floor2"]
+offset_left = 100.0
+offset_top = 560.0
+offset_right = 1052.0
+offset_bottom = 600.0
+color = Color(0.164706, 0.164706, 0.164706, 1)
+
+[node name="LeftWall" type="ColorRect" parent="Floor2"]
+offset_left = 100.0
+offset_top = 90.0
+offset_right = 140.0
+offset_bottom = 560.0
+color = Color(0.164706, 0.164706, 0.164706, 1)
+
+[node name="RightWall" type="ColorRect" parent="Floor2"]
+offset_left = 1012.0
+offset_top = 90.0
+offset_right = 1052.0
+offset_bottom = 560.0
+color = Color(0.164706, 0.164706, 0.164706, 1)
+
+[node name="CollisionWalls" type="StaticBody2D" parent="Floor2"]
+
+[node name="Left" type="CollisionShape2D" parent="Floor2/CollisionWalls"]
+position = Vector2(120, 325)
+shape = SubResource("RectangleShape2D_wall")
+
+[node name="Right" type="CollisionShape2D" parent="Floor2/CollisionWalls"]
+position = Vector2(1032, 325)
+shape = SubResource("RectangleShape2D_wall")
+
+[node name="Top" type="CollisionShape2D" parent="Floor2/CollisionWalls"]
+position = Vector2(576, 70)
+shape = SubResource("RectangleShape2D_horizontal")
+
+[node name="Bottom" type="CollisionShape2D" parent="Floor2/CollisionWalls"]
+position = Vector2(576, 580)
+shape = SubResource("RectangleShape2D_horizontal")
+
+[node name="SpawnFromBedroomMain" type="Marker2D" parent="Floor2"]
+position = Vector2(240, 324)
+
+[node name="SpawnFromStudyRoom" type="Marker2D" parent="Floor2"]
+position = Vector2(912, 324)
+
+[node name="SpawnFromStairsF1" type="Marker2D" parent="Floor2"]
+position = Vector2(750, 320)
+
+[node name="DoorToBedroom" parent="Floor2" instance=ExtResource("2_door")]
+position = Vector2(160, 324)
+rotation = 1.5708
+target_scene = "res://scenes/floor2/bedroom_main.tscn"
+target_spawn_name = "SpawnPoint"
+
+[node name="DoorToStudyRoom" parent="Floor2" instance=ExtResource("2_door")]
+position = Vector2(990, 324)
+rotation = -1.5708
+target_scene = "res://scenes/floor2/study_room.tscn"
+target_spawn_name = "SpawnPoint"
+
+[node name="StairToFloor1" type="Area2D" parent="Floor2"]
+position = Vector2(750, 220)
+
+[node name="Sprite2D" type="Sprite2D" parent="Floor2/StairToFloor1"]
+scale = Vector2(0.6, 0.6)
+texture = ExtResource("5_icon")
+modulate = Color(0.8, 0.7, 0.2, 1)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Floor2/StairToFloor1"]
+shape = SubResource("RectangleShape2D_stair")
+
+[node name="Label" type="Label" parent="Floor2/StairToFloor1"]
+offset_left = -60.0
+offset_top = -60.0
+offset_right = 60.0
+offset_bottom = -40.0
+text = "Leo xuống tầng 1"
+horizontal_alignment = 1
+
+[node name="Player" parent="." instance=ExtResource("1_player")]
+position = Vector2(576, 324)
+
+[node name="AmbientModulate" type="CanvasModulate" parent="."]
+color = Color(0.08, 0.08, 0.11, 1)
+
+[node name="DebugUI" parent="." instance=ExtResource("4_debug_ui")]

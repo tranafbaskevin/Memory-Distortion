@@ -34,6 +34,7 @@ func _ready() -> void:
 	panel.add_child(label)
 	label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+	label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	
 	# Thêm viền chữ (outline) màu đen để dễ đọc
 	label.add_theme_color_override("font_outline_color", Color.BLACK)
@@ -54,6 +55,13 @@ signal message_hidden
 # Hàm toàn cục để hiển thị lời thoại / suy nghĩ của nhân vật
 func show_message(text: String, duration: float = 3.0) -> void:
 	label.text = text
+	
+	# Giới hạn chiều rộng tối đa 800px đối với lời thoại dài để tự động xuống dòng, tránh tràn màn hình
+	if text.length() > 50:
+		label.custom_minimum_size.x = 800
+	else:
+		label.custom_minimum_size.x = 0
+		
 	panel.show()
 	
 	# Cập nhật lại vị trí căn giữa x sau khi size panel thay đổi theo độ dài chữ

@@ -71,5 +71,8 @@ func _set_intensity(value: float) -> void:
 
 func _get_intensity() -> float:
 	if vignette_rect and vignette_rect.material:
-		return (vignette_rect.material as ShaderMaterial).get_shader_parameter("intensity")
+		var val = (vignette_rect.material as ShaderMaterial).get_shader_parameter("intensity")
+		if val == null:
+			return 0.0
+		return float(val)
 	return 0.0

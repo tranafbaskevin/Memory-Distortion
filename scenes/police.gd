@@ -7,6 +7,10 @@ var _is_showing_choices: bool = false
 var _puzzle_solved: bool = false
 
 func _ready() -> void:
+	var title_label = get_node_or_null("RoomTitleOverlay/TitleLabel")
+	if title_label:
+		title_label.text = "ĐỒN CẢNH SÁT"
+
 	AudioManager.play_ambient_for_scene(scene_file_path)
 	
 	var file_node = get_node_or_null("CaseFileInteractable")
@@ -14,12 +18,12 @@ func _ready() -> void:
 		file_node.interacted.connect(_on_file_interacted)
 		
 	# SYSTEM 4: Door anomalies on loop (Cửa bị xê dịch vị trí dị thường khi bị loop)
-	var loops = Global.distortion_events_count
+	var loops = Global.loop_depth
 	if loops > 0:
 		print("[Police] Applying door anomaly for loop depth: ", loops)
 		if door:
-			# Dịch cửa ra mép bên trái thay vì ở giữa
-			door.position.x = 220.0 + (loops * 40.0)
+			# Dịch cửa ra mép bên trái thay vì ở giữa, giới hạn trong phòng
+			door.position.x = clampf(220.0 + (loops * 40.0), 100.0, 1050.0)
 			door.locked_hint = "Cửa dịch chuyển sai vị trí... Tớ cần phải hoàn tất hồ sơ vụ án."
 			
 	_puzzle_solved = Global.unlocked_rooms.get("police_puzzle_solved", false)

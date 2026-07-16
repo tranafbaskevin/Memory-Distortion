@@ -22,7 +22,7 @@ size = Vector2(160, 50)
 [node name="LivingRoom" instance=ExtResource("1_template")]
 
 [node name="DoorToHallway" parent="."]
-target_scene = "res://scenes/floor1/hallway_f1.tscn"
+target_scene = "res://scenes/house.tscn"
 target_spawn_name = "SpawnFromLivingRoom"
 
 [node name="TV" type="StaticBody2D" parent="." index="4"]

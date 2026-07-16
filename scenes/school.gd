@@ -9,6 +9,10 @@ var _is_showing_choices: bool = false
 var _puzzle_solved: bool = false
 
 func _ready() -> void:
+	var title_label = get_node_or_null("RoomTitleOverlay/TitleLabel")
+	if title_label:
+		title_label.text = "TRƯỜNG HỌC KÝ ỨC"
+
 	AudioManager.play_ambient_for_scene(scene_file_path)
 	
 	var board = get_node_or_null("DrawingBoard")

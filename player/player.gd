@@ -14,6 +14,14 @@ func _ready() -> void:
 	add_to_group("Player")
 	prompt_label.hide()
 	
+	# Player Debug Visual (Xanh dương = player)
+	var rect = ColorRect.new()
+	rect.color = Color(0.2, 0.5, 1.0, 0.8)
+	rect.size = Vector2(32, 32)
+	rect.position = -rect.size / 2
+	rect.set_script(load("res://components/debug_rect.gd"))
+	add_child(rect)
+	
 	# Kết nối tín hiệu của Area2D quét tương tác
 	$InteractionDetector.area_entered.connect(_on_interaction_area_entered)
 	$InteractionDetector.area_exited.connect(_on_interaction_area_exited)
@@ -58,7 +66,18 @@ func _physics_process(_delta: float) -> void:
 # Bắt tín hiệu nhấn phím tương tác một lần duy nhất (không spam khi giữ đè phím)
 func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventKey and event.pressed and not event.is_echo():
-		if event.keycode == KEY_E or event.keycode == KEY_ENTER:
+		if event.keycode == KEY_F3:
+			Global.DEBUG_MODE = !Global.DEBUG_MODE
+			print("[DebugSystem] Debug mode toggled: ", Global.DEBUG_MODE)
+			get_tree().call_group("DebugRects", "update_visibility")
+		elif event.keycode == KEY_ESCAPE or event.keycode == KEY_R:
+			var scene_name = get_tree().current_scene.name
+			if scene_name != "House" and scene_name != "TrueEnding" and scene_name != "InfiniteLoopEnding" and scene_name != "BrokenEnding":
+				print("[Failsafe] Force returning to House scene")
+				speed_multiplier = 1.0
+				set_physics_process(true)
+				Transition.change_scene("res://scenes/house.tscn")
+		elif event.keycode == KEY_E or event.keycode == KEY_ENTER:
 			if current_interactable and current_interactable.is_active:
 				current_interactable.interact(self)
 				# Cập nhật lại nhãn gợi ý (nhỡ sau khi tương tác đối tượng bị tắt/vô hiệu hóa)

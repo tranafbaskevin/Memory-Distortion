@@ -1,6 +1,10 @@
 extends Node2D
 
 func _ready() -> void:
+	var title_label = get_node_or_null("RoomTitleOverlay/TitleLabel")
+	if title_label:
+		title_label.text = "PHÒNG VỆ SINH TẦNG 1"
+
 	# Đăng ký phát nhạc nền cho toilet
 	AudioManager.play_ambient_for_scene(scene_file_path)
 	

@@ -12,6 +12,10 @@ extends Node2D
 const SCENE_ID = "bedroom_main"
 
 func _ready() -> void:
+	var title_label = get_node_or_null("RoomTitleOverlay/TitleLabel")
+	if title_label:
+		title_label.text = "PHÒNG NGỦ CHÍNH"
+
 	if not Global.room_visits.has(SCENE_ID):
 		Global.room_visits[SCENE_ID] = 0
 	Global.room_visits[SCENE_ID] += 1
