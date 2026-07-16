@@ -57,7 +57,7 @@ func _resolve_puzzle(accept_truth: bool) -> void:
 			Narrative.show_message("Tớ chấp nhận mọi thứ. Ký ức này là của tớ, tội lỗi này là của tớ. Cửa mở ra...", 4.5)
 			AudioManager.play_door_open()
 			await get_tree().create_timer(3.0).timeout
-			Transition.change_scene("res://scenes/true_ending.tscn")
+			Transition.change_scene("res://scenes/hospital.tscn")
 		else:
 			# Chưa đủ bằng chứng để tự thuyết phục bản thân
 			Narrative.show_message("Tớ cố chấp nhận... nhưng sâu trong lòng tớ vẫn hoài nghi và sợ hãi. (Tớ cần tìm thêm bằng chứng ở chiếc gương và chiếc tủ gỗ phòng ngủ...)", 5.5)

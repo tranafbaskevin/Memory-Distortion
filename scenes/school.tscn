@@ -1,0 +1,70 @@
+[gd_scene load_steps=9 format=3]
+
+[ext_resource type="PackedScene" path="res://scenes/RoomTemplate.tscn" id="1_template"]
+[ext_resource type="Script" path="res://scenes/school.gd" id="2_gd"]
+[ext_resource type="Script" path="res://components/interactable.gd" id="3_interact"]
+[ext_resource type="Texture2D" path="res://icon.svg" id="4_icon"]
+[ext_resource type="Script" path="res://components/light_flicker.gd" id="5_flicker"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_board"]
+radius = 65.0
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_desk"]
+size = Vector2(120, 60)
+
+[node name="School" instance=ExtResource("1_template")]
+script = ExtResource("2_gd")
+
+[node name="DoorToHallway" parent="." index="2"]
+target_scene = "res://scenes/police.tscn"
+target_spawn_name = "SpawnPoint"
+door_state = "locked"
+locked_hint = "Cửa phòng học bị khóa. Tớ cần hoàn thành sắp xếp bức tranh trên bảng."
+
+[node name="SpawnPoint" parent="." index="3"]
+position = Vector2(576, 500)
+
+[node name="Player" parent="." index="4"]
+position = Vector2(576, 500)
+
+[node name="SchoolLight" type="PointLight2D" parent="." index="6"]
+position = Vector2(576, 250)
+script = ExtResource("5_flicker")
+base_energy = 0.7
+flicker_intensity = 0.15
+color = Color(0.9, 0.95, 1, 1)
+
+[node name="DrawingBoard" type="Area2D" parent="." index="7"]
+position = Vector2(576, 100)
+script = ExtResource("3_interact")
+prompt_message = "Nhấn E để sắp xếp tranh vẽ"
+
+[node name="Sprite2D" type="Sprite2D" parent="DrawingBoard"]
+scale = Vector2(2.5, 0.5)
+texture = ExtResource("4_icon")
+modulate = Color(0.12, 0.14, 0.16, 1)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DrawingBoard"]
+shape = SubResource("CircleShape2D_board")
+
+[node name="Desk" type="StaticBody2D" parent="." index="8"]
+position = Vector2(300, 350)
+
+[node name="Sprite2D" type="Sprite2D" parent="Desk"]
+scale = Vector2(1.2, 0.6)
+texture = ExtResource("4_icon")
+modulate = Color(0.45, 0.35, 0.25, 1)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Desk"]
+shape = SubResource("RectangleShape2D_desk")
+
+[node name="Desk2" type="StaticBody2D" parent="." index="9"]
+position = Vector2(800, 350)
+
+[node name="Sprite2D" type="Sprite2D" parent="Desk2"]
+scale = Vector2(1.2, 0.6)
+texture = ExtResource("4_icon")
+modulate = Color(0.45, 0.35, 0.25, 1)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Desk2"]
+shape = SubResource("RectangleShape2D_desk")

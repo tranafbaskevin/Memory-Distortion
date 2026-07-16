@@ -108,6 +108,11 @@ func request_event(min_tier: int = -1, max_tier: int = -1) -> String:
 	# Kiểm tra cooldown toàn cục
 	if _elapsed_seconds - _last_any_event < COOLDOWN_ANY_EVENT:
 		return ""
+		
+	# Bỏ qua distortion event ngẫu nhiên nếu vừa có memory trigger mạnh chạy (tránh overload)
+	var time_now = Time.get_ticks_msec() / 1000.0
+	if time_now - Global.last_trigger_time < 12.0:
+		return ""
 	
 	# Chọn tier phù hợp (không vượt quá tier hiện tại)
 	var effective_tier = clampi(current_tier, min_tier, max_tier)

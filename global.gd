@@ -35,3 +35,5 @@ var elapsed_seconds: float = 0.0
 ## Lưu số lần player đã quan sát từng anchor object
 ## anchor_id → observed_count
 var anchor_observations: Dictionary = {}
+var last_trigger_time: float = -999.0
+

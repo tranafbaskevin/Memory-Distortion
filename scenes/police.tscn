@@ -1,0 +1,59 @@
+[gd_scene load_steps=9 format=3]
+
+[ext_resource type="PackedScene" path="res://scenes/RoomTemplate.tscn" id="1_template"]
+[ext_resource type="Script" path="res://scenes/police.gd" id="2_gd"]
+[ext_resource type="Script" path="res://components/interactable.gd" id="3_interact"]
+[ext_resource type="Texture2D" path="res://icon.svg" id="4_icon"]
+[ext_resource type="Script" path="res://components/light_flicker.gd" id="5_flicker"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_file"]
+radius = 60.0
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_desk"]
+size = Vector2(160, 80)
+
+[node name="Police" instance=ExtResource("1_template")]
+script = ExtResource("2_gd")
+
+[node name="DoorToHallway" parent="." index="2"]
+target_scene = "res://scenes/crime_scene.tscn"
+target_spawn_name = "SpawnPoint"
+door_state = "locked"
+locked_hint = "Cửa đồn cảnh sát khóa chặt. Tớ cần kết luận hồ sơ vụ án."
+
+[node name="SpawnPoint" parent="." index="3"]
+position = Vector2(576, 500)
+
+[node name="Player" parent="." index="4"]
+position = Vector2(576, 500)
+
+[node name="PoliceLight" type="PointLight2D" parent="." index="6"]
+position = Vector2(576, 200)
+script = ExtResource("5_flicker")
+base_energy = 0.6
+flicker_intensity = 0.14
+color = Color(0.85, 0.9, 0.95, 1)
+
+[node name="Desk" type="StaticBody2D" parent="." index="7"]
+position = Vector2(576, 280)
+
+[node name="Sprite2D" type="Sprite2D" parent="Desk"]
+scale = Vector2(1.6, 0.8)
+texture = ExtResource("4_icon")
+modulate = Color(0.3, 0.32, 0.35, 1)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Desk"]
+shape = SubResource("RectangleShape2D_desk")
+
+[node name="CaseFileInteractable" type="Area2D" parent="." index="8"]
+position = Vector2(576, 280)
+script = ExtResource("3_interact")
+prompt_message = "Nhấn E để kiểm tra hồ sơ vụ án"
+
+[node name="Sprite2D" type="Sprite2D" parent="CaseFileInteractable"]
+scale = Vector2(0.4, 0.5)
+texture = ExtResource("4_icon")
+modulate = Color(0.8, 0.7, 0.5, 1)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CaseFileInteractable"]
+shape = SubResource("CircleShape2D_file")

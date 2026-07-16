@@ -164,9 +164,11 @@ func _reset_ambient_timer() -> void:
 	_ambient_timer.start(randf_range(min_time, max_time))
 
 func _on_ambient_timer_timeout() -> void:
-	# Chỉ phát tiếng động ngẫu nhiên nếu không có hội thoại đang diễn ra và đã vượt qua Level 0
-	if not _is_ducked and Global.global_distortion_level >= 1:
-		_play_random_ambient_sound()
+	# Bỏ qua phát tiếng động ngẫu nhiên nếu vừa có memory trigger chạy (tránh overload âm thanh)
+	var time_since_trigger = (Time.get_ticks_msec() / 1000.0) - Global.last_trigger_time
+	if time_since_trigger > 12.0:
+		if not _is_ducked and Global.global_distortion_level >= 1:
+			_play_random_ambient_sound()
 	_reset_ambient_timer()
 
 func _play_random_ambient_sound() -> void:

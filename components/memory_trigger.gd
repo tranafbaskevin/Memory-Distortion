@@ -50,6 +50,11 @@ func _on_body_entered(body: Node2D) -> void:
 	if _on_cooldown:
 		return
 		
+	# Check cooldown toàn cục (không reset theo scene)
+	var time_now = Time.get_ticks_msec() / 1000.0
+	if time_now - Global.last_trigger_time < 15.0:
+		return
+		
 	# Check tỷ lệ kích hoạt ngẫu nhiên
 	if randf() > trigger_chance:
 		return
@@ -59,6 +64,8 @@ func _on_body_entered(body: Node2D) -> void:
 
 func _run_immersion_loop(player: Node2D) -> void:
 	_on_cooldown = true
+	Global.last_trigger_time = Time.get_ticks_msec() / 1000.0
+	
 	if trigger_type == "type_a_story":
 		_has_triggered = true
 		if trigger_id != "":

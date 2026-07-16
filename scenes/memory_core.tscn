@@ -1,0 +1,41 @@
+[gd_scene load_steps=6 format=3]
+
+[ext_resource type="PackedScene" path="res://scenes/RoomTemplate.tscn" id="1_template"]
+[ext_resource type="Script" path="res://scenes/memory_core.gd" id="2_gd"]
+[ext_resource type="Script" path="res://components/interactable.gd" id="3_interact"]
+[ext_resource type="Texture2D" path="res://icon.svg" id="4_icon"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_core"]
+radius = 80.0
+
+[node name="MemoryCore" instance=ExtResource("1_template")]
+script = ExtResource("2_gd")
+
+[node name="DoorToHallway" parent="." index="2"]
+visible = false
+monitoring = false
+monitorable = false
+
+[node name="SpawnPoint" parent="." index="3"]
+position = Vector2(576, 480)
+
+[node name="Player" parent="." index="4"]
+position = Vector2(576, 480)
+
+[node name="CoreLight" type="PointLight2D" parent="." index="6"]
+position = Vector2(576, 250)
+energy = 1.0
+color = Color(0.6, 0.9, 1, 1)
+
+[node name="CoreInteractable" type="Area2D" parent="." index="7"]
+position = Vector2(576, 250)
+script = ExtResource("3_interact")
+prompt_message = "Nhấn E để chạm vào Cốt Lõi Ký Ức"
+
+[node name="Sprite2D" type="Sprite2D" parent="CoreInteractable"]
+scale = Vector2(1.2, 1.2)
+texture = ExtResource("4_icon")
+modulate = Color(0.4, 0.8, 1, 0.7)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CoreInteractable"]
+shape = SubResource("CircleShape2D_core")
